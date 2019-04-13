@@ -1,0 +1,18 @@
+{
+  "name": "iceCrystal",
+  "version": "1.0.0",
+  "description": "Blocks created for display driven by open source FPGAs",
+  "keywords": "LCD,Display",
+  "license": "GPL-2.0",
+  "authors": [{
+    "name": "Carlos Jesús Venegas Arrabé (charliva)",
+    "email": "carlos@magnitude.es",
+    "url": "https://github.com/charliva"
+  }],
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "branch": "master",
+    "url": "https://github.com/charliva/icecrystal"
+  }
+}
