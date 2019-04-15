@@ -12,26 +12,6 @@
     "graph": {
       "blocks": [
         {
-          "id": "c4d16082-a3f4-4703-aad5-d74e910e10da",
-          "type": "basic.input",
-          "data": {
-            "name": "xwing_updown",
-            "pins": [
-              {
-                "index": "0",
-                "name": "SW2",
-                "value": "33"
-              }
-            ],
-            "virtual": false,
-            "clock": false
-          },
-          "position": {
-            "x": -2216,
-            "y": -872
-          }
-        },
-        {
           "id": "2c4ad4f2-3022-437f-a6b6-e466fed7748f",
           "type": "basic.output",
           "data": {
@@ -62,8 +42,28 @@
             "virtual": false
           },
           "position": {
-            "x": 1472,
-            "y": -592
+            "x": 680,
+            "y": -656
+          }
+        },
+        {
+          "id": "c4d16082-a3f4-4703-aad5-d74e910e10da",
+          "type": "basic.input",
+          "data": {
+            "name": "up_down",
+            "pins": [
+              {
+                "index": "0",
+                "name": "SW2",
+                "value": "33"
+              }
+            ],
+            "virtual": false,
+            "clock": false
+          },
+          "position": {
+            "x": -2728,
+            "y": -480
           }
         },
         {
@@ -81,8 +81,8 @@
             "virtual": false
           },
           "position": {
-            "x": 1472,
-            "y": -424
+            "x": 680,
+            "y": -480
           }
         },
         {
@@ -100,8 +100,8 @@
             "virtual": false
           },
           "position": {
-            "x": 1472,
-            "y": -352
+            "x": 680,
+            "y": -400
           }
         },
         {
@@ -119,8 +119,8 @@
             "virtual": false
           },
           "position": {
-            "x": 1472,
-            "y": -280
+            "x": 680,
+            "y": -320
           }
         },
         {
@@ -139,8 +139,8 @@
             "clock": false
           },
           "position": {
-            "x": -80,
-            "y": 488
+            "x": -3216,
+            "y": -64
           }
         },
         {
@@ -152,8 +152,8 @@
             "local": false
           },
           "position": {
-            "x": -3672,
-            "y": -376
+            "x": -2552,
+            "y": -240
           }
         },
         {
@@ -165,16 +165,16 @@
             "local": false
           },
           "position": {
-            "x": -2224,
-            "y": -1344
+            "x": -2552,
+            "y": -672
           }
         },
         {
           "id": "fc3c594c-3322-4389-96ef-cf9db92f18fc",
           "type": "519d315d08b3a8cc1aac53c9d14d2fd81d67033f",
           "position": {
-            "x": -2224,
-            "y": -1240
+            "x": -2552,
+            "y": -568
           },
           "size": {
             "width": 96,
@@ -182,13 +182,64 @@
           }
         },
         {
+          "id": "8bcd74b8-7810-4ed3-bdea-54a2dacb62a8",
+          "type": "519d315d08b3a8cc1aac53c9d14d2fd81d67033f",
+          "position": {
+            "x": -2552,
+            "y": -144
+          },
+          "size": {
+            "width": 96,
+            "height": 64
+          }
+        },
+        {
+          "id": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
+          "type": "81613874c6152f06c06ed7014bf4235900cfcc30",
+          "position": {
+            "x": -3008,
+            "y": -48
+          },
+          "size": {
+            "width": 96,
+            "height": 64
+          }
+        },
+        {
+          "id": "1938d7e9-7daf-4576-aeac-17c43239fd7b",
+          "type": "3bd4aca3e85e2d550a36a5184d4cd0ecfa193e5c",
+          "position": {
+            "x": 128,
+            "y": -600
+          },
+          "size": {
+            "width": 320,
+            "height": 160
+          }
+        },
+        {
+          "id": "b75800e8-feac-4db2-a39d-bd21e32895b2",
+          "type": "532697d34499e3c907e6d5f7223559a9a2494fda",
+          "position": {
+            "x": -280,
+            "y": -616
+          },
+          "size": {
+            "width": 96,
+            "height": 192
+          }
+        },
+        {
           "id": "035d83e0-376d-4c92-8003-330939d27fc9",
           "type": "basic.code",
           "data": {
-            "code": "parameter XWING_ROM = \"xwing.list\";\n// Caracteres\nlocalparam BLANK = 8'h20;\nlocalparam XWING_UP =0;\nlocalparam XWING_UP_0 =1;\nlocalparam XWING_UP_1 =2;\nlocalparam XWING_DOWN =3;\nlocalparam XWING_DOWN_0 =4;\nlocalparam XWING_DOWN_1 =5;\nlocalparam SETUP =6;\n\n// Vamos a tener un array de frames con la animacion\nreg [7:0] xwing_frames [0:2];\n\nreg [7:0] pixmap =BLANK;\nreg [3:0] x=0;\nreg [1:0] y=0;\nreg [2:0] state=SETUP;\n\nreg IRQ = 0;\n\n\n// Inicializamos, cargamos la rom con los frames del xwing\n// y sacamos el primer frame\n\ninitial begin\n  \n  $readmemh(XWING_ROM, xwing_frames);\n  \n  \nend\n\n\n\nalways @(posedge clock)begin\n\n    if(rst)\n        state<=SETUP;\n    else\n    case (state)\n    SETUP: begin\n        state<=XWING_DOWN;\n    end\n    \n     XWING_DOWN_0: begin\n            state<=XWING_DOWN_1;\n    end\n    \n    XWING_DOWN_1: begin\n            state<=XWING_DOWN;\n    end\n    \n    XWING_DOWN: begin\n            if(IRQ==1)begin\n                state<=XWING_UP_0;\n            end\n    end\n    \n     XWING_UP_0: begin\n        \n            state<=XWING_UP_1;\n         \n    end\n    XWING_UP_1: begin\n            state<=XWING_UP;\n     \n    end\n    XWING_UP: begin\n\n            if(IRQ==1)begin\n           \n                state<=XWING_DOWN_0;\n            end\n         \n    end\n    default:\n        //-- Siempre hay que ponerlo, para evitar\n        //-- latches en la síntesis\n        state <= SETUP;\n    \n    endcase\n  \n  \nend\n\n\nalways @*\n    case (state)\n    SETUP: begin\n        y<=1;\n        x<=0;\n        pixmap<=xwing_frames[0];\n        IRQ<=0;\n    end\n    \n     XWING_DOWN_0: begin\n            \n            IRQ<=0;\n            y<=0;\n            pixmap<=xwing_frames[2];\n         \n\n    end\n    \n    XWING_DOWN_1: begin\n         \n            y<=1;\n            pixmap<=xwing_frames[2];\n         \n\n    end\n    \n    XWING_DOWN: begin\n            y<=1;\n            pixmap<=xwing_frames[0];\n            if(toggle) IRQ<=1;\n            \n    end\n    \n     XWING_UP_0: begin\n            IRQ<=0;\n            y<=1;\n            pixmap<=xwing_frames[1];\n            \n    end\n    XWING_UP_1: begin\n            IRQ<=0;\n            y<=0;\n            pixmap<=xwing_frames[1];\n         \n\n    end\n    XWING_UP: begin\n    \n            y<=0;\n            pixmap<=xwing_frames[0];\n           if(toggle) IRQ<=1;\n         \n\n    end\n    \n    \n    endcase\n\n\n",
+            "code": "/* *****************************************************************************\n * XWing Engine\n *\n * Author:  Carlos Jesus Venegas Arrabe\n * Project page: https://github.com/charliva/icecrystal\n * ************************************************************************** */\n \nparameter XWING_ROM = \"xwing.list\";\n\n// Caracteres\nlocalparam BLANK = 8'h20;\nlocalparam XWING_UP =0;\nlocalparam XWING_UP_0 =1;\nlocalparam XWING_UP_1 =2;\nlocalparam XWING_DOWN =3;\nlocalparam XWING_DOWN_0 =4;\nlocalparam XWING_DOWN_1 =5;\nlocalparam SETUP =6;\n\n// Vamos a tener un array de frames con la animacion\nreg [7:0] xwing_frames [0:2];\nreg [7:0] pixmap =BLANK;\nreg [3:0] x=0;\nreg [1:0] y=0;\nreg [2:0] state=SETUP;\nreg IRQ = 0;\n\n// Inicializamos, cargamos la rom con los frames del xwing\n// y sacamos el primer frame\n\ninitial begin\n  $readmemh(XWING_ROM, xwing_frames);\nend\n\nalways @(posedge clk)begin\n\n    if(rst)\n        state<=SETUP;\n    else\n    if(clock)\n        case (state)\n        SETUP: begin\n            state<=XWING_DOWN;\n        end\n        XWING_DOWN_0: begin\n                state<=XWING_DOWN_1;\n        end\n        XWING_DOWN_1: begin\n                state<=XWING_DOWN;\n        end\n        XWING_DOWN: begin\n            if(IRQ==1)begin\n                state<=XWING_UP_0;\n            end\n        end\n        XWING_UP_0: begin\n            state<=XWING_UP_1;\n        end\n        XWING_UP_1: begin\n            state<=XWING_UP;\n        end\n        XWING_UP: begin\n            if(IRQ==1)begin\n                state<=XWING_DOWN_0;\n            end\n        end\n        default:\n            state <= SETUP;\n    endcase\nend\n\n\nalways @*\n    case (state)\n    SETUP: begin\n        y<=1;\n        x<=0;\n        pixmap<=xwing_frames[0];\n        IRQ<=0;\n    end\n    XWING_DOWN_0: begin\n        IRQ<=0;\n        y<=0;\n        pixmap<=xwing_frames[2];\n    end\n    XWING_DOWN_1: begin\n        y<=1;\n        pixmap<=xwing_frames[2];\n    end\n    XWING_DOWN: begin\n        y<=1;\n        pixmap<=xwing_frames[0];\n        if(toggle) IRQ<=1;\n    end\n     XWING_UP_0: begin\n        IRQ<=0;\n        y<=1;\n        pixmap<=xwing_frames[1];\n    end\n    XWING_UP_1: begin\n            IRQ<=0;\n            y<=0;\n            pixmap<=xwing_frames[1];\n    end\n    XWING_UP: begin\n        y<=0;\n        pixmap<=xwing_frames[0];\n        if(toggle) IRQ<=1;\n    end\n    endcase",
             "params": [],
             "ports": {
               "in": [
+                {
+                  "name": "clk"
+                },
                 {
                   "name": "clock"
                 },
@@ -219,94 +270,27 @@
             }
           },
           "position": {
-            "x": -1992,
-            "y": -1400
+            "x": -2352,
+            "y": -656
           },
           "size": {
             "width": 640,
-            "height": 1112
-          }
-        },
-        {
-          "id": "2718c161-6632-45b3-ba1e-8a036eaab842",
-          "type": "basic.code",
-          "data": {
-            "code": "parameter BACKGROUND_ROM = \"background.list\";\n\nlocalparam NCOLS = 24;\n\nreg [7:0] background[0:(NCOLS*2)-1];\n\nreg [95:0]background_L1=96'h202020202020202020202020;\nreg [95:0]background_L2=96'h202020202020202020202020;\n\nlocalparam SETUP=0;\nlocalparam SHIFT=1;\nlocalparam SHIFT2=2;\nlocalparam IDLE=3;\nreg [7:0] counter = 0;\n\nreg [7:0] state = SETUP;\nreg [7:0] POS = 8;\nreg screen_complete=0;\nreg [9:0] steps = 0;\nreg [7:0] v_counter=0;\nreg [7:0] acceleration=100;\n\ninitial begin\n  \n  $readmemh(BACKGROUND_ROM, background);\n  \n  \nend\n\n\n//-- Registro de desplazamiento\nalways @(posedge(clock)) begin\n    if(rst)\n        state<=SETUP; \n    else\n    case(state)\n    SETUP: begin\n        background_L1<=96'h202020202020202020202020;\n        background_L2<=96'h202020202020202020202020;\n        //background_L1[(96-(POS*8))-1:((96-(POS*8))-1)-7]<=8'h32;\n        screen_complete<=0;\n        state<=SHIFT;\n        counter<=0;\n        steps<=0;\n        v_counter<=0;\n        acceleration<=100;\n    end\n    SHIFT: begin\n          background_L1 <= {background_L1[87:0],background[counter]};\n          background_L2 <= {background_L2[87:0],background[NCOLS+counter]};\n          state<=SHIFT2;\n          screen_complete<=0;\n    end\n    SHIFT2: begin\n        \n        if(counter<NCOLS) counter<=counter+1;\n        else begin\n            counter<=0;\n            screen_complete<=1;\n        end\n        steps<=steps+1;\n        case (steps)\n        12: acceleration<=90;\n        24: acceleration<=80;\n        36: acceleration<=70;\n        48: acceleration<=50;\n        60: acceleration<=30;\n        endcase\n        \n        state<=IDLE;\n    end\n    IDLE: begin \n        if(v_counter<acceleration) begin\n            v_counter<=v_counter+1;\n        end\n        else begin\n            v_counter<=0;\n            state<=SHIFT;\n        end\n        \n    end\n    default:\n    state<= SETUP;\n   endcase\n   \nend",
-            "params": [],
-            "ports": {
-              "in": [
-                {
-                  "name": "clock"
-                },
-                {
-                  "name": "rst"
-                }
-              ],
-              "out": [
-                {
-                  "name": "background_L1",
-                  "range": "[95:0]",
-                  "size": 96
-                },
-                {
-                  "name": "background_L2",
-                  "range": "[95:0]",
-                  "size": 96
-                },
-                {
-                  "name": "screen_complete"
-                },
-                {
-                  "name": "steps",
-                  "range": "[9:0]",
-                  "size": 10
-                }
-              ]
-            }
-          },
-          "position": {
-            "x": -3416,
-            "y": -352
-          },
-          "size": {
-            "width": 696,
-            "height": 712
-          }
-        },
-        {
-          "id": "8bcd74b8-7810-4ed3-bdea-54a2dacb62a8",
-          "type": "519d315d08b3a8cc1aac53c9d14d2fd81d67033f",
-          "position": {
-            "x": -3672,
-            "y": -272
-          },
-          "size": {
-            "width": 96,
-            "height": 64
-          }
-        },
-        {
-          "id": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
-          "type": "81613874c6152f06c06ed7014bf4235900cfcc30",
-          "position": {
-            "x": 328,
-            "y": 160
-          },
-          "size": {
-            "width": 96,
-            "height": 64
+            "height": 312
           }
         },
         {
           "id": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
           "type": "basic.code",
           "data": {
-            "code": "//parameter CANVAS_ROM = \"canvas.list\";\n// FSM\nlocalparam SETUP=0;\nlocalparam CLEAN_BUFFER=1;\nlocalparam FETCH=2;\nlocalparam LOOP_WRITE_1=3;\nlocalparam LOOP_WRITE_2=4;\nlocalparam CRASH_1=5;\nlocalparam CRASH_2=6;\nlocalparam CRASH_RESET=7;\nlocalparam crash_counts=5;\nlocalparam fps=6000;\nlocalparam SPEED =200;\n\n// Caracteres\nlocalparam BLANK = \" \";\n\n// Número de columnas\nlocalparam NCOLS = 16; \nlocalparam NLINES = 2; \n\n// Mapeo de memoria, dirección de la primera posición\n// de la primera y segunda línea\nreg [3:0] x=0;\nreg [3:0] y=0;\n\nreg [7:0] data=BLANK; // Por defecto un espacio en blanco \nreg [7:0] state=SETUP;\nreg WE = 0;\nreg rst_secs =0;\n\n\nreg [7: 0] buffer_L1[0: NCOLS-1];\nreg [7: 0] buffer_L2[0: NCOLS-1]; \n\nreg [7:0] crash_counter=0;\nreg [15:0] fps_counter=0;\nreg [7:0] col_counter=0;\nreg [1:0] line_counter=0;\n\n/*\ninitial begin\n\n  $readmemh(CANVAS_ROM, buffer_L1);\n  $readmemh(CANVAS_ROM, buffer_L2);\n\nend\n*/\n\nalways @(posedge clk)begin\n\n\n    \n    if(rst)begin\n      rst_secs<=1;\n      state<=SETUP;\n      WE <= 0;\n       fps_counter<=0;\n        crash_counter<=0;\n     \n\n    end\n    \n    else begin\n    \n    \n  \n    if(UW)\n     case(state)\n            SETUP: begin\n                state<=CLEAN_BUFFER;\n                rst_secs<=0;\n                data<=0;\n                WE <= 0;\n                x<=0;\n                y<=0;\n                col_counter<=0;\n                line_counter<=0;\n               \n            end \n            CLEAN_BUFFER: begin\n               \n               buffer_L1[0]<=bg_L1[95:88];                 \n               buffer_L1[1]<=bg_L1[87:80];\n               buffer_L1[2]<=bg_L1[79:72];\n               buffer_L1[3]<=bg_L1[71:64];\n               buffer_L1[4]<=bg_L1[63:56];\n               buffer_L1[5]<=bg_L1[55:48];\n               buffer_L1[6]<=bg_L1[47:40];\n               buffer_L1[7]<=bg_L1[39:32];\n               buffer_L1[8]<=bg_L1[31:24];\n               buffer_L1[9]<=8'h20;\n               buffer_L1[10]<=8'h20;\n               buffer_L1[11]<=8'h20;\n               buffer_L1[15]<=8'h20;\n               \n               buffer_L1[12]<=steps[23:16];\n               buffer_L1[13]<=steps[15:8];\n               buffer_L1[14]<=steps[7:0];\n            \n               \n               \n               \n               buffer_L2[0]<=bg_L2[95:88];\n               buffer_L2[1]<=bg_L2[87:80];\n               buffer_L2[2]<=bg_L2[79:72];\n               buffer_L2[3]<=bg_L2[71:64];\n               buffer_L2[4]<=bg_L2[63:56];\n               buffer_L2[5]<=bg_L2[55:48];\n               buffer_L2[6]<=bg_L2[47:40];\n               buffer_L2[7]<=bg_L2[39:32];\n               buffer_L2[8]<=bg_L2[31:24];\n               buffer_L2[9]<=bg_L2[23:16];\n               buffer_L2[10]<=bg_L2[15:8];\n               buffer_L2[11]<=bg_L2[7:0];  \n               buffer_L2[12]<=8'h20;\n               buffer_L2[13]<=8'h20;\n               buffer_L2[14]<=8'h20;\n               buffer_L2[15]<=8'h20;\n               state<=FETCH;\n            \n              \n            end\n            FETCH: begin\n               \n                 col_counter<=0;\n                 line_counter<=0;\n                 WE <= 0;\n                 x<=0;\n                 y<=0;\n                 //XWING\n                \n                if(xwing_y==0) begin\n                    if(buffer_L1[xwing_x] == 8'hFF ) begin\n                         \n                            rst_secs<=1;\n                            state<=SETUP;\n                            WE <= 0;\n                            crash_counter<=0;\n                        \n                    end\n                    else begin\n                        state<=LOOP_WRITE_1;\n                        buffer_L1[xwing_x]<=xwing;\n                    end\n                end\n                else begin\n                   if(buffer_L2[xwing_x] == 8'hFF ) begin\n                            rst_secs<=1;\n                            state<=SETUP;\n                            WE <= 0;\n                            crash_counter<=0;\n                    end\n                    else begin\n                        state<=LOOP_WRITE_1;\n                        buffer_L2[xwing_x]<=xwing;\n                    end\n                end\n                 \n            end\n\n            LOOP_WRITE_1: begin\n                \n                if(col_counter<NCOLS) begin\n                    state<=LOOP_WRITE_2;\n                    if(line_counter==0)\n                        data<=buffer_L1[col_counter];\n                    else\n                        data<=buffer_L2[col_counter];\n                    WE <=1;\n                end\n                else begin\n                        x<=0;\n                        WE <= 0;\n                        if(line_counter<NLINES) begin\n                            line_counter<=line_counter+1;\n                            col_counter<=0;\n                            y<=1;\n                            \n                            \n                        end\n                        else begin\n                            state<=CLEAN_BUFFER;\n                            y<=0;\n                           \n                            \n                        end\n                end\n            end\n            \n            LOOP_WRITE_2: begin\n                 state<=LOOP_WRITE_1;\n                 col_counter<=col_counter+1;\n                 x<=x+1;\n                 WE <=0;\n            end\n        endcase\n\n    end\nend\n",
+            "code": "/* *****************************************************************************\n * Game engine\n *\n * Author:  Carlos Jesus Venegas Arrabe\n * Project page: https://github.com/charliva/icecrystal\n * ************************************************************************** */\n \nlocalparam SETUP=0;\nlocalparam CLEAN_BUFFER=1;\nlocalparam FETCH=2;\nlocalparam LOOP_WRITE_1=3;\nlocalparam LOOP_WRITE_2=4;\nlocalparam CRASH_1=5;\nlocalparam CRASH_2=6;\nlocalparam CRASH_RESET=7;\nlocalparam crash_counts=5;\nlocalparam fps=6000;\nlocalparam SPEED =200;\nlocalparam BLANK = \" \";\nlocalparam NCOLS = 16; \nlocalparam NLINES = 2; \n\n// Mapeo de memoria, dirección de la primera posición\n// de la primera y segunda línea\nreg [3:0] x=0;\nreg [3:0] y=0;\nreg [7:0] data=BLANK; // Por defecto un espacio en blanco \nreg [7:0] state=SETUP;\nreg WE = 0;\nreg rst_secs =0;\nreg [7: 0] buffer_L1[0: NCOLS-1];\nreg [7: 0] buffer_L2[0: NCOLS-1]; \nreg [7:0] crash_counter=0;\nreg [15:0] fps_counter=0;\nreg [7:0] col_counter=0;\nreg [1:0] line_counter=0;\n\n\nalways @(posedge clk)begin\n\n    if(rst)begin\n        rst_secs<=1;\n        state<=SETUP;\n        WE <= 0;\n        fps_counter<=0;\n        crash_counter<=0;\n    end\n    else begin\n        case(state)\n            SETUP: begin\n                state<=CLEAN_BUFFER;\n                rst_secs<=0;\n                data<=0;\n                WE <= 0;\n                x<=0;\n                y<=0;\n                col_counter<=0;\n                line_counter<=0;\n            end \n            CLEAN_BUFFER: begin\n               buffer_L1[0]<=bg_L1[95:88];                 \n               buffer_L1[1]<=bg_L1[87:80];\n               buffer_L1[2]<=bg_L1[79:72];\n               buffer_L1[3]<=bg_L1[71:64];\n               buffer_L1[4]<=bg_L1[63:56];\n               buffer_L1[5]<=bg_L1[55:48];\n               buffer_L1[6]<=bg_L1[47:40];\n               buffer_L1[7]<=bg_L1[39:32];\n               buffer_L1[8]<=bg_L1[31:24];\n               buffer_L1[9]<=8'h20;\n               buffer_L1[10]<=8'h20;\n               buffer_L1[11]<=8'h20;\n               buffer_L1[15]<=8'h20;\n               buffer_L1[12]<=steps[23:16];\n               buffer_L1[13]<=steps[15:8];\n               buffer_L1[14]<=steps[7:0];\n               buffer_L2[0]<=bg_L2[95:88];\n               buffer_L2[1]<=bg_L2[87:80];\n               buffer_L2[2]<=bg_L2[79:72];\n               buffer_L2[3]<=bg_L2[71:64];\n               buffer_L2[4]<=bg_L2[63:56];\n               buffer_L2[5]<=bg_L2[55:48];\n               buffer_L2[6]<=bg_L2[47:40];\n               buffer_L2[7]<=bg_L2[39:32];\n               buffer_L2[8]<=bg_L2[31:24];\n               buffer_L2[9]<=bg_L2[23:16];\n               buffer_L2[10]<=bg_L2[15:8];\n               buffer_L2[11]<=bg_L2[7:0];  \n               buffer_L2[12]<=8'h20;\n               buffer_L2[13]<=8'h20;\n               buffer_L2[14]<=8'h20;\n               buffer_L2[15]<=8'h20;\n        \n               state<=FETCH;\n            end\n            FETCH: begin\n                 col_counter<=0;\n                 line_counter<=0;\n                 WE <= 0;\n                 x<=0;\n                 y<=0;\n        \n                //XWING\n                if(xwing_y==0) begin\n                    if(buffer_L1[xwing_x] == 8'hFF ) begin\n                            rst_secs<=1;\n                            state<=SETUP;\n                            WE <= 0;\n                            crash_counter<=0;\n                    end\n                    else begin\n                        state<=LOOP_WRITE_1;\n                        buffer_L1[xwing_x]<=xwing;\n                    end\n                end\n                else begin\n                   if(buffer_L2[xwing_x] == 8'hFF ) begin\n                        rst_secs<=1;\n                        state<=SETUP;\n                        WE <= 0;\n                        crash_counter<=0;\n                    end\n                    else begin\n                        state<=LOOP_WRITE_1;\n                        buffer_L2[xwing_x]<=xwing;\n                    end\n                end\n            end\n\n            LOOP_WRITE_1: begin\n                if(col_counter<NCOLS) begin\n                    state<=LOOP_WRITE_2;\n                    if(line_counter==0)\n                        data<=buffer_L1[col_counter];\n                    else\n                        data<=buffer_L2[col_counter];\n                    WE <=1;\n                end\n                else begin\n                    x<=0;\n                    WE <= 0;\n                    if(line_counter<NLINES) begin\n                        line_counter<=line_counter+1;\n                        col_counter<=0;\n                        y<=1;\n                    end\n                    else begin\n                        state<=CLEAN_BUFFER;\n                        y<=0;\n                    end\n                end\n            end\n            LOOP_WRITE_2: begin\n                state<=LOOP_WRITE_1;\n                col_counter<=col_counter+1;\n                x<=x+1;\n                WE <=0;\n            end\n        endcase\n    end\nend",
             "params": [],
             "ports": {
               "in": [
                 {
                   "name": "clk"
+                },
+                {
+                  "name": "rst"
                 },
                 {
                   "name": "xwing_x",
@@ -332,12 +316,6 @@
                   "name": "bg_L2",
                   "range": "[95:0]",
                   "size": 96
-                },
-                {
-                  "name": "UW"
-                },
-                {
-                  "name": "rst"
                 },
                 {
                   "name": "steps",
@@ -371,55 +349,20 @@
             }
           },
           "position": {
-            "x": -792,
-            "y": -864
+            "x": -1112,
+            "y": -752
           },
           "size": {
-            "width": 744,
-            "height": 1224
+            "width": 568,
+            "height": 824
           }
         },
         {
-          "id": "3039bab1-fe2c-4ec5-b93f-cd3c8b38d65f",
-          "type": "basic.code",
-          "data": {
-            "code": "reg [23:0] ascii_3chars=\"000\";\n\n\nalways @(posedge clk)begin\n        \n        // Extraemos cada dígito aislando cada parte decimal\n        // Le sumamos 48  que es el código ascii para el 0\n        // el resto de dígitos se incrementan en 1\n        ascii_3chars[23:16]<=((number_3digit/100)%10)+48; //--Centenas\n        ascii_3chars[15:8]<=((number_3digit/10)%10)+48;   //--Decenas\n        ascii_3chars[7:0]<=((number_3digit)%10)+48;       //--Unidades\n\nend",
-            "params": [],
-            "ports": {
-              "in": [
-                {
-                  "name": "clk"
-                },
-                {
-                  "name": "number_3digit",
-                  "range": "[9:0]",
-                  "size": 10
-                }
-              ],
-              "out": [
-                {
-                  "name": "ascii_3chars",
-                  "range": "[23:0]",
-                  "size": 24
-                }
-              ]
-            }
-          },
+          "id": "a6fc30a2-a055-41df-888a-e8565217fe15",
+          "type": "264d0d5e8a6c308d640a1681825b9d575880a359",
           "position": {
-            "x": -2528,
-            "y": 1016
-          },
-          "size": {
-            "width": 560,
-            "height": 248
-          }
-        },
-        {
-          "id": "81951ba1-bb66-4d5e-86fd-844bc6bdf775",
-          "type": "725b7e2cb9666b5ed3183537d9c898f096dab82a",
-          "position": {
-            "x": -1040,
-            "y": -8
+            "x": -1464,
+            "y": -64
           },
           "size": {
             "width": 96,
@@ -427,27 +370,237 @@
           }
         },
         {
-          "id": "1938d7e9-7daf-4576-aeac-17c43239fd7b",
-          "type": "3bd4aca3e85e2d550a36a5184d4cd0ecfa193e5c",
+          "id": "2718c161-6632-45b3-ba1e-8a036eaab842",
+          "type": "basic.code",
+          "data": {
+            "code": "/* *****************************************************************************\n * Background engine\n *\n * Author:  Carlos Jesus Venegas Arrabe\n * Project page: https://github.com/charliva/icecrystal\n * ************************************************************************** */\n \nparameter BACKGROUND_ROM = \"background.list\";\n\nlocalparam NCOLS = 24;\n\nreg [7:0] background[0:(NCOLS*2)-1];\n\nreg [95:0]background_L1=96'h202020202020202020202020;\nreg [95:0]background_L2=96'h202020202020202020202020;\n\nlocalparam SETUP=0;\nlocalparam SHIFT=1;\nlocalparam SHIFT2=2;\nlocalparam IDLE=3;\nreg [7:0] counter = 0;\nreg [7:0] state = SETUP;\nreg [7:0] POS = 8;\nreg [9:0] steps = 0;\nreg [7:0] v_counter=0;\nreg [7:0] acceleration=100;\n\ninitial begin\n  $readmemh(BACKGROUND_ROM, background);\nend\n\nalways @(posedge(clk)) begin\n    if(rst)\n        state<=SETUP; \n    else\n    if(clock)\n    case(state)\n    SETUP: begin\n        background_L1<=96'h202020202020202020202020;\n        background_L2<=96'h202020202020202020202020;\n        state<=SHIFT;\n        counter<=0;\n        steps<=0;\n        v_counter<=0;\n        acceleration<=100;\n    end\n    SHIFT: begin\n          background_L1 <= {background_L1[87:0],background[counter]};\n          background_L2 <= {background_L2[87:0],background[NCOLS+counter]};\n          state<=SHIFT2;\n        \n    end\n    SHIFT2: begin\n        \n        if(counter<NCOLS) counter<=counter+1;\n        else begin\n            counter<=0;\n        end\n        steps<=steps+1;\n   \n        case (steps)\n        12: acceleration<=90;\n        24: acceleration<=80;\n        36: acceleration<=70;\n        48: acceleration<=50;\n        60: acceleration<=30;\n        endcase\n        \n        state<=IDLE;\n    end\n    IDLE: begin \n        if(v_counter<acceleration) begin\n            v_counter<=v_counter+1;\n        end\n        else begin\n            v_counter<=0;\n            state<=SHIFT;\n        end\n    end\n    default:\n    state<= SETUP;\n   endcase\nend",
+            "params": [],
+            "ports": {
+              "in": [
+                {
+                  "name": "clk"
+                },
+                {
+                  "name": "clock"
+                },
+                {
+                  "name": "rst"
+                }
+              ],
+              "out": [
+                {
+                  "name": "background_L1",
+                  "range": "[95:0]",
+                  "size": 96
+                },
+                {
+                  "name": "background_L2",
+                  "range": "[95:0]",
+                  "size": 96
+                },
+                {
+                  "name": "steps",
+                  "range": "[9:0]",
+                  "size": 10
+                }
+              ]
+            }
+          },
           "position": {
-            "x": 920,
-            "y": -456
+            "x": -2336,
+            "y": -256
           },
           "size": {
-            "width": 320,
-            "height": 160
+            "width": 648,
+            "height": 288
           }
         },
         {
-          "id": "b75800e8-feac-4db2-a39d-bd21e32895b2",
-          "type": "532697d34499e3c907e6d5f7223559a9a2494fda",
+          "id": "df455c33-9a0e-482e-9f84-230c7d6d5c0c",
+          "type": "basic.info",
+          "data": {
+            "info": "# Ejemplo 10: X-WING\n\nEste ejemplo es más una demo que un ejemplo al uso. El juego está planteado como tres bloques de verilog con las siguientes funcionalidades:\n\n* **Bloque 1 - X-WING**: este es el bloque que gestiona la nave, utilizará el botón **SW2** a modo de toggle es decir que con el mismo botón subimos y si volvemos a pulsar, bajamos la nave.\n* **Bloque 2 - Background**:  en este bloque se gestiona el fondo infinito, es decir cuando acaba vuelve a empezar por el principio.\n* **Bloque 3 - Game Engine**: o motor del juego, es el bloque que mezcla toda la información y la pinta en pantalla.\n\nLos comentarios intentan mostrar los puntos más importantes, sobre todo a nivel del concepto de arquitectura de un juego sencillo de este tipo.\n\nDentro de los bloques de verilog se ha documentado para explicar el funcionamiento.",
+            "readonly": true
+          },
           "position": {
-            "x": 496,
-            "y": -480
+            "x": -2904,
+            "y": -1264
+          },
+          "size": {
+            "width": 976,
+            "height": 288
+          }
+        },
+        {
+          "id": "22fa77e5-9e34-42ee-8745-d868f3192e39",
+          "type": "2107ac7691a91a762c2d0be100faaabd6189973a",
+          "position": {
+            "x": -2552,
+            "y": -496
           },
           "size": {
             "width": 96,
-            "height": 192
+            "height": 64
+          }
+        },
+        {
+          "id": "04732577-d790-414c-bbff-0f30a26c5664",
+          "type": "basic.info",
+          "data": {
+            "info": "El bombeo de 200msecs define la animación de la nave para que al ojo humano pueda apreciarse.",
+            "readonly": true
+          },
+          "position": {
+            "x": -2768,
+            "y": -672
+          },
+          "size": {
+            "width": 192,
+            "height": 128
+          }
+        },
+        {
+          "id": "c7c9dacc-c136-4f2d-a3aa-14666ed8145c",
+          "type": "basic.info",
+          "data": {
+            "info": "Con el **SW2** subiremos y bajaremos la nave",
+            "readonly": true
+          },
+          "position": {
+            "x": -2880,
+            "y": -472
+          },
+          "size": {
+            "width": 144,
+            "height": 80
+          }
+        },
+        {
+          "id": "a32b4d0e-c86b-43e7-85d2-3a2c4412564e",
+          "type": "basic.info",
+          "data": {
+            "info": "Con el reset volvemos a un estado conocido de inicio",
+            "readonly": true
+          },
+          "position": {
+            "x": -3208,
+            "y": -144
+          },
+          "size": {
+            "width": 248,
+            "height": 64
+          }
+        },
+        {
+          "id": "f2069d79-7807-4e99-bb75-8647153c7794",
+          "type": "basic.info",
+          "data": {
+            "info": "Con la puerta **OR** reseteamos al inicio, si se pulsa el botón o si el motor del juego nos indica que te has chocado",
+            "readonly": true
+          },
+          "position": {
+            "x": -3008,
+            "y": 32
+          },
+          "size": {
+            "width": 248,
+            "height": 64
+          }
+        },
+        {
+          "id": "b59b5c72-fd1c-483f-b322-f09588da7005",
+          "type": "basic.info",
+          "data": {
+            "info": "El bombeo de 10msecs define el ritmo más rápido de avance del fondo,internamente se modificará la velocidad estableciendo tramos a partir de un contador de pulsos de 10msec",
+            "readonly": true
+          },
+          "position": {
+            "x": -2760,
+            "y": -248
+          },
+          "size": {
+            "width": 200,
+            "height": 64
+          }
+        },
+        {
+          "id": "1757bdcb-8a18-4b8f-bfb7-27723ed2cfb3",
+          "type": "basic.info",
+          "data": {
+            "info": "el número de celdas avanzadas nos llega como número, pero en la LCD hay que pintarla como caracteres, así que utilizamos este decodificador para obtener los tres digitos",
+            "readonly": true
+          },
+          "position": {
+            "x": -1504,
+            "y": 24
+          },
+          "size": {
+            "width": 200,
+            "height": 64
+          }
+        },
+        {
+          "id": "7e206808-6b5f-4117-a035-ec4c5a52c90f",
+          "type": "basic.info",
+          "data": {
+            "info": "**BLOQUE 1**: gestión del X-WING",
+            "readonly": true
+          },
+          "position": {
+            "x": -2344,
+            "y": -704
+          },
+          "size": {
+            "width": 648,
+            "height": 40
+          }
+        },
+        {
+          "id": "ee62bb4d-4d32-4c2f-af5e-fd1856da7fa6",
+          "type": "basic.info",
+          "data": {
+            "info": "**BLOQUE 2**: gestión del Fondo (background)",
+            "readonly": true
+          },
+          "position": {
+            "x": -2328,
+            "y": -304
+          },
+          "size": {
+            "width": 648,
+            "height": 40
+          }
+        },
+        {
+          "id": "9ac8bf53-6ade-4abd-9067-9dc6ac50fb8c",
+          "type": "basic.info",
+          "data": {
+            "info": "**BLOQUE 3**: Motor del juego (game engine)",
+            "readonly": true
+          },
+          "position": {
+            "x": -1104,
+            "y": -800
+          },
+          "size": {
+            "width": 648,
+            "height": 40
+          }
+        },
+        {
+          "id": "ddafd201-4eac-4605-80dd-f7b681bd0b31",
+          "type": "basic.info",
+          "data": {
+            "info": "Si nos chocamos el motor del juego resetea el estado para volver a empezar",
+            "readonly": true
+          },
+          "position": {
+            "x": -504,
+            "y": 8
+          },
+          "size": {
+            "width": 200,
+            "height": 64
           }
         }
       ],
@@ -463,8 +616,8 @@
           },
           "vertices": [
             {
-              "x": -1272,
-              "y": -384
+              "x": -1384,
+              "y": -344
             }
           ],
           "size": 8
@@ -491,16 +644,6 @@
         },
         {
           "source": {
-            "block": "c4d16082-a3f4-4703-aad5-d74e910e10da",
-            "port": "out"
-          },
-          "target": {
-            "block": "035d83e0-376d-4c92-8003-330939d27fc9",
-            "port": "toggle"
-          }
-        },
-        {
-          "source": {
             "block": "035d83e0-376d-4c92-8003-330939d27fc9",
             "port": "x"
           },
@@ -510,8 +653,8 @@
           },
           "vertices": [
             {
-              "x": -944,
-              "y": -704
+              "x": -1288,
+              "y": -552
             }
           ],
           "size": 4
@@ -527,22 +670,11 @@
           },
           "vertices": [
             {
-              "x": -1184,
-              "y": -704
+              "x": -1336,
+              "y": -480
             }
           ],
           "size": 2
-        },
-        {
-          "source": {
-            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
-            "port": "background_L1"
-          },
-          "target": {
-            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
-            "port": "bg_L1"
-          },
-          "size": 96
         },
         {
           "source": {
@@ -555,12 +687,8 @@
           },
           "vertices": [
             {
-              "x": -1936,
-              "y": 16
-            },
-            {
-              "x": -1408,
-              "y": 0
+              "x": -1400,
+              "y": -88
             }
           ],
           "size": 96
@@ -578,126 +706,6 @@
         },
         {
           "source": {
-            "block": "8bcd74b8-7810-4ed3-bdea-54a2dacb62a8",
-            "port": "c138a610-b61f-4e7c-bb8a-c4f3b0b9f95c"
-          },
-          "target": {
-            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
-            "port": "clock"
-          }
-        },
-        {
-          "source": {
-            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
-            "port": "rst_secs"
-          },
-          "target": {
-            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
-            "port": "18c2ebc7-5152-439c-9b3f-851c59bac834"
-          },
-          "vertices": [
-            {
-              "x": 1072,
-              "y": 512
-            },
-            {
-              "x": 192,
-              "y": 392
-            }
-          ]
-        },
-        {
-          "source": {
-            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
-            "port": "out"
-          },
-          "target": {
-            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
-            "port": "97b51945-d716-4b6c-9db9-970d08541249"
-          }
-        },
-        {
-          "source": {
-            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
-            "port": "664caf9e-5f40-4df4-800a-b626af702e62"
-          },
-          "target": {
-            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
-            "port": "rst"
-          },
-          "vertices": [
-            {
-              "x": -376,
-              "y": 160
-            }
-          ]
-        },
-        {
-          "source": {
-            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
-            "port": "664caf9e-5f40-4df4-800a-b626af702e62"
-          },
-          "target": {
-            "block": "035d83e0-376d-4c92-8003-330939d27fc9",
-            "port": "rst"
-          },
-          "vertices": [
-            {
-              "x": 208,
-              "y": 96
-            }
-          ]
-        },
-        {
-          "source": {
-            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
-            "port": "out"
-          },
-          "target": {
-            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
-            "port": "rst"
-          },
-          "vertices": [
-            {
-              "x": 48,
-              "y": -360
-            }
-          ]
-        },
-        {
-          "source": {
-            "block": "3039bab1-fe2c-4ec5-b93f-cd3c8b38d65f",
-            "port": "ascii_3chars"
-          },
-          "target": {
-            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
-            "port": "steps"
-          },
-          "size": 24
-        },
-        {
-          "source": {
-            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
-            "port": "steps"
-          },
-          "target": {
-            "block": "3039bab1-fe2c-4ec5-b93f-cd3c8b38d65f",
-            "port": "number_3digit"
-          },
-          "size": 10
-        },
-        {
-          "source": {
-            "block": "81951ba1-bb66-4d5e-86fd-844bc6bdf775",
-            "port": "3d584b0a-29eb-47af-8c43-c0822282ef05"
-          },
-          "target": {
-            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
-            "port": "UW"
-          }
-        },
-        {
-          "source": {
             "block": "1938d7e9-7daf-4576-aeac-17c43239fd7b",
             "port": "6b70ba55-a524-4736-bda3-05d3b989c154"
           },
@@ -705,12 +713,7 @@
             "block": "2c4ad4f2-3022-437f-a6b6-e466fed7748f",
             "port": "in"
           },
-          "vertices": [
-            {
-              "x": 1384,
-              "y": -448
-            }
-          ],
+          "vertices": [],
           "size": 4
         },
         {
@@ -735,8 +738,8 @@
           },
           "vertices": [
             {
-              "x": 1368,
-              "y": -328
+              "x": 576,
+              "y": -472
             }
           ]
         },
@@ -751,8 +754,8 @@
           },
           "vertices": [
             {
-              "x": 1320,
-              "y": -272
+              "x": 528,
+              "y": -416
             }
           ]
         },
@@ -765,7 +768,12 @@
             "block": "1938d7e9-7daf-4576-aeac-17c43239fd7b",
             "port": "6982faa1-414d-4934-92a3-ccace9cef491"
           },
-          "vertices": []
+          "vertices": [
+            {
+              "x": -72,
+              "y": -552
+            }
+          ]
         },
         {
           "source": {
@@ -776,7 +784,12 @@
             "block": "1938d7e9-7daf-4576-aeac-17c43239fd7b",
             "port": "44b8caa1-f852-4d83-9b79-c5283958e715"
           },
-          "vertices": [],
+          "vertices": [
+            {
+              "x": -112,
+              "y": -496
+            }
+          ],
           "size": 8
         },
         {
@@ -802,8 +815,8 @@
           },
           "vertices": [
             {
-              "x": 288,
-              "y": -544
+              "x": -432,
+              "y": -648
             }
           ],
           "size": 4
@@ -817,12 +830,7 @@
             "block": "b75800e8-feac-4db2-a39d-bd21e32895b2",
             "port": "c13f02ea-6fac-4d2c-97f2-30f88de5a970"
           },
-          "vertices": [
-            {
-              "x": 216,
-              "y": -456
-            }
-          ],
+          "vertices": [],
           "size": 4
         },
         {
@@ -836,8 +844,8 @@
           },
           "vertices": [
             {
-              "x": 216,
-              "y": -272
+              "x": -432,
+              "y": -400
             }
           ],
           "size": 8
@@ -850,7 +858,96 @@
           "target": {
             "block": "b75800e8-feac-4db2-a39d-bd21e32895b2",
             "port": "ae5b286c-5bac-47c3-9f4e-5f93990997fe"
+          },
+          "vertices": [
+            {
+              "x": -376,
+              "y": -328
+            }
+          ]
+        },
+        {
+          "source": {
+            "block": "8bcd74b8-7810-4ed3-bdea-54a2dacb62a8",
+            "port": "c138a610-b61f-4e7c-bb8a-c4f3b0b9f95c"
+          },
+          "target": {
+            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
+            "port": "clock"
           }
+        },
+        {
+          "source": {
+            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
+            "port": "out"
+          },
+          "target": {
+            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
+            "port": "18c2ebc7-5152-439c-9b3f-851c59bac834"
+          }
+        },
+        {
+          "source": {
+            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
+            "port": "background_L1"
+          },
+          "target": {
+            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
+            "port": "bg_L1"
+          },
+          "vertices": [
+            {
+              "x": -1392,
+              "y": -192
+            }
+          ],
+          "size": 96
+        },
+        {
+          "source": {
+            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
+            "port": "664caf9e-5f40-4df4-800a-b626af702e62"
+          },
+          "target": {
+            "block": "035d83e0-376d-4c92-8003-330939d27fc9",
+            "port": "rst"
+          },
+          "vertices": [
+            {
+              "x": -2776,
+              "y": -240
+            }
+          ]
+        },
+        {
+          "source": {
+            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
+            "port": "664caf9e-5f40-4df4-800a-b626af702e62"
+          },
+          "target": {
+            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
+            "port": "rst"
+          }
+        },
+        {
+          "source": {
+            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
+            "port": "664caf9e-5f40-4df4-800a-b626af702e62"
+          },
+          "target": {
+            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
+            "port": "rst"
+          },
+          "vertices": [
+            {
+              "x": -1712,
+              "y": -776
+            },
+            {
+              "x": -1248,
+              "y": -752
+            }
+          ]
         },
         {
           "source": {
@@ -860,7 +957,17 @@
           "target": {
             "block": "b75800e8-feac-4db2-a39d-bd21e32895b2",
             "port": "5751bfd4-9119-4458-8709-86e2d1850cdb"
-          }
+          },
+          "vertices": [
+            {
+              "x": -576,
+              "y": -880
+            },
+            {
+              "x": -376,
+              "y": -768
+            }
+          ]
         },
         {
           "source": {
@@ -870,6 +977,74 @@
           "target": {
             "block": "1938d7e9-7daf-4576-aeac-17c43239fd7b",
             "port": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f"
+          },
+          "vertices": [
+            {
+              "x": -280,
+              "y": -960
+            },
+            {
+              "x": -32,
+              "y": -856
+            }
+          ]
+        },
+        {
+          "source": {
+            "block": "2718c161-6632-45b3-ba1e-8a036eaab842",
+            "port": "steps"
+          },
+          "target": {
+            "block": "a6fc30a2-a055-41df-888a-e8565217fe15",
+            "port": "9f22719b-3cf6-4d6f-96dd-daef173c3658"
+          },
+          "size": 10
+        },
+        {
+          "source": {
+            "block": "a6fc30a2-a055-41df-888a-e8565217fe15",
+            "port": "3a016e31-b3e6-4c60-b068-b59d5dfaae1d"
+          },
+          "target": {
+            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
+            "port": "steps"
+          },
+          "size": 24
+        },
+        {
+          "source": {
+            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
+            "port": "rst_secs"
+          },
+          "target": {
+            "block": "c2067433-cdd8-4d9e-a188-5e9c0ec47bc6",
+            "port": "97b51945-d716-4b6c-9db9-970d08541249"
+          },
+          "vertices": [
+            {
+              "x": -1840,
+              "y": 208
+            }
+          ]
+        },
+        {
+          "source": {
+            "block": "c4d16082-a3f4-4703-aad5-d74e910e10da",
+            "port": "out"
+          },
+          "target": {
+            "block": "22fa77e5-9e34-42ee-8745-d868f3192e39",
+            "port": "21bc142d-a93a-430d-b37a-326435def9f9"
+          }
+        },
+        {
+          "source": {
+            "block": "22fa77e5-9e34-42ee-8745-d868f3192e39",
+            "port": "997db8c4-b772-49d8-83e7-4427aff720e6"
+          },
+          "target": {
+            "block": "035d83e0-376d-4c92-8003-330939d27fc9",
+            "port": "toggle"
           }
         }
       ]
@@ -1095,68 +1270,6 @@
               },
               "target": {
                 "block": "664caf9e-5f40-4df4-800a-b626af702e62",
-                "port": "in"
-              }
-            }
-          ]
-        }
-      }
-    },
-    "725b7e2cb9666b5ed3183537d9c898f096dab82a": {
-      "package": {
-        "name": "1",
-        "version": "0.1",
-        "description": "Un bit constante a 1",
-        "author": "Jesus Arroyo",
-        "image": "%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2233.632%22%20height=%2269.34%22%20viewBox=%220%200%2031.530464%2065.006656%22%3E%3Cpath%20d=%22M3.517%2012.015L19%200l12.53%202.863-10.012%2043.262-9.746-2.227%207.7-34.532L8.03%2016.38z%22%20fill=%22green%22%20fill-rule=%22evenodd%22/%3E%3Cpath%20d=%22M17.593%2043.464l7.822%2010.472-6.56%207.919%202.27%202.043m-5.14-20.179l-4.542%2010.473-10.345%202.043.757%203.32%22%20fill=%22none%22%20stroke=%22green%22%20stroke-width=%222.196%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22/%3E%3C/svg%3E"
-      },
-      "design": {
-        "graph": {
-          "blocks": [
-            {
-              "id": "3d584b0a-29eb-47af-8c43-c0822282ef05",
-              "type": "basic.output",
-              "data": {
-                "name": ""
-              },
-              "position": {
-                "x": 512,
-                "y": 160
-              }
-            },
-            {
-              "id": "61331ec5-2c56-4cdd-b607-e63b1502fa65",
-              "type": "basic.code",
-              "data": {
-                "code": "//-- Bit constante a 1\nassign q = 1'b1;\n\n",
-                "params": [],
-                "ports": {
-                  "in": [],
-                  "out": [
-                    {
-                      "name": "q"
-                    }
-                  ]
-                }
-              },
-              "position": {
-                "x": 168,
-                "y": 112
-              },
-              "size": {
-                "width": 256,
-                "height": 160
-              }
-            }
-          ],
-          "wires": [
-            {
-              "source": {
-                "block": "61331ec5-2c56-4cdd-b607-e63b1502fa65",
-                "port": "q"
-              },
-              "target": {
-                "block": "3d584b0a-29eb-47af-8c43-c0822282ef05",
                 "port": "in"
               }
             }
@@ -4309,6 +4422,282 @@
                 "port": "data_i"
               },
               "size": 8
+            }
+          ]
+        }
+      }
+    },
+    "264d0d5e8a6c308d640a1681825b9d575880a359": {
+      "package": {
+        "name": "Decodificador-10bitBCD-3charASCII",
+        "version": "0.1",
+        "description": "Decodificador de BCD a ASCII",
+        "author": "Carlos Jesús Venegas Arrabé",
+        "image": "%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22288.783%22%20height=%22288.031%22%20viewBox=%220%200%2076.407136%2076.208176%22%3E%3Cdefs%3E%3Cmarker%20orient=%22auto%22%20id=%22a%22%20overflow=%22visible%22%3E%3Cpath%20d=%22M2.308%200l-3.46%202v-4z%22%20fill=%22red%22%20fill-rule=%22evenodd%22%20stroke=%22red%22%20stroke-width=%22.533%22/%3E%3C/marker%3E%3C/defs%3E%3Ctext%20style=%22line-height:1.25;-inkscape-font-specification:ubuntu%22%20x=%2272.944%22%20y=%2295.339%22%20font-weight=%22400%22%20font-size=%2232.213%22%20font-family=%22ubuntu%22%20letter-spacing=%220%22%20word-spacing=%220%22%20fill=%22#00f%22%20stroke-width=%222.013%22%20transform=%22translate(-63.7%20-72.5)%22%3E%3Ctspan%20x=%2272.944%22%20y=%2295.339%22%20style=%22-inkscape-font-specification:'ubuntu%20Medium'%22%20font-weight=%22500%22%3EBCD%3C/tspan%3E%3C/text%3E%3Ctext%20style=%22line-height:1.25;-inkscape-font-specification:ubuntu%22%20x=%2263.538%22%20y=%22148.225%22%20font-weight=%22400%22%20font-size=%2232.213%22%20font-family=%22ubuntu%22%20letter-spacing=%220%22%20word-spacing=%220%22%20fill=%22green%22%20stroke-width=%222.013%22%20transform=%22translate(-63.7%20-72.5)%22%3E%3Ctspan%20x=%2263.538%22%20y=%22148.225%22%20style=%22-inkscape-font-specification:'ubuntu%20Medium'%22%20font-weight=%22500%22%3EASCII%3C/tspan%3E%3C/text%3E%3Cpath%20d=%22M104.608%2098.985V115.1%22%20fill=%22none%22%20stroke=%22red%22%20stroke-width=%223.969%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22bevel%22%20marker-end=%22url(#a)%22%20transform=%22translate(-63.7%20-72.5)%22/%3E%3C/svg%3E"
+      },
+      "design": {
+        "graph": {
+          "blocks": [
+            {
+              "id": "3c3f12a4-f58e-41fe-80b0-17336ff5e396",
+              "type": "basic.input",
+              "data": {
+                "name": "",
+                "clock": true
+              },
+              "position": {
+                "x": 0,
+                "y": 96
+              }
+            },
+            {
+              "id": "3a016e31-b3e6-4c60-b068-b59d5dfaae1d",
+              "type": "basic.output",
+              "data": {
+                "name": "3char_ascii",
+                "range": "[23:0]",
+                "size": 24
+              },
+              "position": {
+                "x": 1016,
+                "y": 280
+              }
+            },
+            {
+              "id": "9f22719b-3cf6-4d6f-96dd-daef173c3658",
+              "type": "basic.input",
+              "data": {
+                "name": "10bit_BCD",
+                "range": "[9:0]",
+                "clock": false,
+                "size": 10
+              },
+              "position": {
+                "x": 8,
+                "y": 456
+              }
+            },
+            {
+              "id": "3ac06479-95f8-4383-985f-39034110a891",
+              "type": "basic.code",
+              "data": {
+                "code": "/* *****************************************************************************\n * 10bits BCD to ASCII decoder (3digit numbers)\n *\n * Author:  Carlos Jesus Venegas Arrabe\n * Project page: https://github.com/charliva/icecrystal\n * ************************************************************************** */\n \nlocalparam RESOLUTION =  20;\nlocalparam X2RESOLUTION = 2*RESOLUTION;\nlocalparam RESOLUTION_C = 2**RESOLUTION;\n//Trick to round up (X-1)/Y+1\nlocalparam RESOLUTION_C_10 = (RESOLUTION_C-1)/10+1;\nlocalparam RESOLUTION_C_100 = (RESOLUTION_C-1)/100+1;\n\nreg [X2RESOLUTION*2-1:0] buffer_value [0:4];\nreg [X2RESOLUTION*2-1:0] buffer_value_aux [0:4];\n\n\nreg [23:0] ascii_3chars=\"000\";\n\n\nalways @(posedge clk)begin\n        \n        /* Extraemos cada dígito aislando cada parte decimal\n           Le sumamos 48  que es el código ascii para el 0\n           el resto de dígitos se incrementan en 1.\n           De forma \"matemática humana\" la fórmula sera:\n        \n            ascii_3chars[23:16]<=((number_3digit/100)%10)+48; //--Centenas\n            ascii_3chars[15:8]<=((number_3digit/10)%10)+48;   //--Decenas\n            ascii_3chars[7:0]<=((number_3digit)%10)+48;       //--Unidades\n        */\n             \n        //--Centenas\n        buffer_value[2] = ((value<<RESOLUTION)*RESOLUTION_C_100)>>X2RESOLUTION;\n        buffer_value_aux[2] = ( ( (((buffer_value[2]<<RESOLUTION) * RESOLUTION_C_10) >>X2RESOLUTION) <<1) + ( (((buffer_value[2]<<RESOLUTION) *RESOLUTION_C_10) >>X2RESOLUTION) <<3) );\n        ascii_3chars[23:16]=(buffer_value[2] - buffer_value_aux[2])+48;   \n                \n        //--Decenas\n        buffer_value[3] = ((value<<RESOLUTION)*RESOLUTION_C_10)>>X2RESOLUTION;\n        buffer_value_aux[3] = ( ( (((buffer_value[3]<<RESOLUTION) * RESOLUTION_C_10) >>X2RESOLUTION) <<1) + ( (((buffer_value[3]<<RESOLUTION) * RESOLUTION_C_10) >>X2RESOLUTION) <<3) );\n        ascii_3chars[15:8]=(buffer_value[3] - buffer_value_aux[3] )+48;   \n\n        //--Unidades\n        buffer_value[4] = ( ( (((value<<RESOLUTION) * RESOLUTION_C_10) >>X2RESOLUTION) <<1) + ( (((value<<RESOLUTION) * RESOLUTION_C_10) >>X2RESOLUTION) <<3) );\n        ascii_3chars[7:0]=(value - buffer_value[4][15:0] )+48;  \n        \nend",
+                "params": [],
+                "ports": {
+                  "in": [
+                    {
+                      "name": "clk"
+                    },
+                    {
+                      "name": "value",
+                      "range": "[9:0]",
+                      "size": 10
+                    }
+                  ],
+                  "out": [
+                    {
+                      "name": "ascii_3chars",
+                      "range": "[23:0]",
+                      "size": 24
+                    }
+                  ]
+                }
+              },
+              "position": {
+                "x": 236,
+                "y": -56
+              },
+              "size": {
+                "width": 632,
+                "height": 728
+              }
+            }
+          ],
+          "wires": [
+            {
+              "source": {
+                "block": "9f22719b-3cf6-4d6f-96dd-daef173c3658",
+                "port": "out"
+              },
+              "target": {
+                "block": "3ac06479-95f8-4383-985f-39034110a891",
+                "port": "value"
+              },
+              "size": 10
+            },
+            {
+              "source": {
+                "block": "3c3f12a4-f58e-41fe-80b0-17336ff5e396",
+                "port": "out"
+              },
+              "target": {
+                "block": "3ac06479-95f8-4383-985f-39034110a891",
+                "port": "clk"
+              }
+            },
+            {
+              "source": {
+                "block": "3ac06479-95f8-4383-985f-39034110a891",
+                "port": "ascii_3chars"
+              },
+              "target": {
+                "block": "3a016e31-b3e6-4c60-b068-b59d5dfaae1d",
+                "port": "in"
+              },
+              "size": 24
+            }
+          ]
+        }
+      }
+    },
+    "2107ac7691a91a762c2d0be100faaabd6189973a": {
+      "package": {
+        "name": "Pulsador-tic",
+        "version": "0.1",
+        "description": "Detección de pulsación. Emite un tic cada vez que se aprieta el pulsador",
+        "author": "Juan Gonzalez-Gomez (Obijuan)",
+        "image": "%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20xmlns:xlink=%22http://www.w3.org/1999/xlink%22%20width=%22293.977%22%20height=%22257.958%22%20viewBox=%220%200%2077.781366%2068.251365%22%3E%3Cdefs%3E%3ClinearGradient%20gradientTransform=%22matrix(-.013%20-.01966%20.01932%20-.01493%20151.654%20290.082)%22%20gradientUnits=%22userSpaceOnUse%22%20y2=%222300.215%22%20x2=%226069.057%22%20y1=%222538.05%22%20x1=%225466.681%22%20id=%22b%22%20xlink:href=%22#a%22/%3E%3ClinearGradient%20id=%22a%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#c3875c%22/%3E%3Cstop%20offset=%22.48%22%20stop-color=%22#eccba3%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fce0cb%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20transform=%22translate(138.022%20-134.888)%22%3E%3Cpath%20d=%22M-117.19%20184.278a20.69%209.094%200%200%200-13.734%202.307l-5.434.006-1.284%205.482a20.69%209.094%200%200%200-.238%201.3%2020.69%209.094%200%200%200%2020.69%209.093%2020.69%209.094%200%200%200%2020.69-9.094%2020.69%209.094%200%200%200-.029-.351h.064l-1.277-6.47-5.778.005a20.69%209.094%200%200%200-13.67-2.278z%22%20fill=%22#333%22%20stroke=%22#000%22%20stroke-width=%22.282%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22/%3E%3Cellipse%20ry=%226.762%22%20rx=%2219.408%22%20cy=%22187.341%22%20cx=%22-117.074%22%20fill=%22#666%22%20stroke=%22#000%22%20stroke-width=%22.282%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22/%3E%3Cg%20transform=%22matrix(.1018%200%200%20.10181%20-158.528%20145.536)%22%20stroke=%22#000%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20stroke-width=%222.772%22%3E%3Cellipse%20cx=%22406.087%22%20cy=%22399.216%22%20rx=%22184.221%22%20ry=%2272.858%22%20fill=%22green%22/%3E%3Cellipse%20cx=%22406.23%22%20cy=%22383.328%22%20rx=%22179.497%22%20ry=%2260.977%22%20fill=%22#0f0%22/%3E%3C/g%3E%3C/g%3E%3Cpath%20d=%22M126.16%20115.387c-1.523%201.514-2.14%203.307-2.023%205.326-.507%201.097-2.411%202.346-2.027%203.267-1.196%201.923-1.624%203.389-1.572%204.569-.544%201.24-.403%201.705-.348%202.268-2.266%203.497-4.092%208.255-5.878%2013.125-2.302%202.765-3.64%205.792-4.898%208.84-2.191%203.7-3.756%207.67-4.02%2011.394l-.265.558c2.996%203.107%204.946%201.524%207.018.747%206.637-3.112%209.504-8.52%2012.212-14.025.473-1.572%201.57-3.127%203.151-4.669%204.414-4.785%206.886-10.022%209.857-15.142.228-.428.58-1.032%201.143-1.941%201.675-1.795%203.418-4.997%205.132-7.612z%22%20fill=%22url(#b)%22%20fill-rule=%22evenodd%22%20stroke=%22#000%22%20stroke-width=%22.265%22%20transform=%22translate(-90.276%20-115.233)%22/%3E%3Cpath%20d=%22M18.486%2038.911c-2.362%202.823-3.506%206.298-4.228%2010.204.518.13%201.302-.444%202.155-1.196%202.575-6.067%201.848-7.142%202.073-9.008z%22%20fill=%22#f8ecf8%22%20fill-rule=%22evenodd%22%20stroke=%22#000%22%20stroke-width=%22.265%22/%3E%3Cpath%20d=%22M33.79%205.666c2.093-.057%203.853.53%205.373%201.582M31.832%208.759c2.001.286%203.946.663%205.428%201.788M30.331%2013.16c1.325-.48%203.02.099%204.83%201.005M29.98%2015.593l1.79.362%22%20fill=%22none%22%20stroke=%22#000%22%20stroke-width=%22.265%22/%3E%3Cg%20transform=%22matrix(1.2877%200%200%201.2877%20-70.904%20-45.941)%22%20stroke=%22green%22%20stroke-linecap=%22round%22%3E%3Ccircle%20r=%2214.559%22%20cy=%2273.815%22%20cx=%22100.602%22%20fill=%22#ececec%22%20stroke-width=%22.608%22%20stroke-linejoin=%22round%22/%3E%3Cpath%20d=%22M106.978%2082.142h-3.353V63.316H97.54v18.678h-3.652%22%20fill=%22none%22%20stroke-width=%221.521%22/%3E%3C/g%3E%3C/svg%3E"
+      },
+      "design": {
+        "graph": {
+          "blocks": [
+            {
+              "id": "5340dd0d-17b9-42a2-b4d9-fbd56349f8c8",
+              "type": "basic.input",
+              "data": {
+                "name": "",
+                "clock": true
+              },
+              "position": {
+                "x": 304,
+                "y": 96
+              }
+            },
+            {
+              "id": "b58132b2-2e39-4a85-ab5b-63bded91cecc",
+              "type": "basic.output",
+              "data": {
+                "name": "s"
+              },
+              "position": {
+                "x": 976,
+                "y": 96
+              }
+            },
+            {
+              "id": "997db8c4-b772-49d8-83e7-4427aff720e6",
+              "type": "basic.output",
+              "data": {
+                "name": "t"
+              },
+              "position": {
+                "x": 968,
+                "y": 376
+              }
+            },
+            {
+              "id": "21bc142d-a93a-430d-b37a-326435def9f9",
+              "type": "basic.input",
+              "data": {
+                "name": "",
+                "clock": false
+              },
+              "position": {
+                "x": 304,
+                "y": 376
+              }
+            },
+            {
+              "id": "7c4fa7d1-d70c-445e-b844-73a692fb95a9",
+              "type": "basic.info",
+              "data": {
+                "info": "**Pulsador-tic**",
+                "readonly": true
+              },
+              "position": {
+                "x": 496,
+                "y": -56
+              },
+              "size": {
+                "width": 152,
+                "height": 40
+              }
+            },
+            {
+              "id": "e1c281e9-6a22-456b-863e-20d2550b122c",
+              "type": "basic.code",
+              "data": {
+                "code": "// Sincronizacion. Evitar \n// problema de la metaestabilidad\n\nreg d2;\nreg r_in;\n\nalways @(posedge clk)\n d2 <= d;\n \nalways @(posedge clk)\n  r_in <= d2;\n\n\n//-- Debouncer Circuit\n//-- It produces a stable output when the\n//-- input signal is bouncing\n\nreg btn_prev = 0;\nreg btn_out_r = 0;\n\nreg [16:0] counter = 0;\n\n\nalways @(posedge clk) begin\n\n  //-- If btn_prev and btn_in are differents\n  if (btn_prev ^ r_in == 1'b1) begin\n    \n      //-- Reset the counter\n      counter <= 0;\n      \n      //-- Capture the button status\n      btn_prev <= r_in;\n  end\n    \n  //-- If no timeout, increase the counter\n  else if (counter[16] == 1'b0)\n      counter <= counter + 1;\n      \n  else\n    //-- Set the output to the stable value\n    btn_out_r <= btn_prev;\n\nend\n\n//-- Generar tic en flanco de subida del boton\nreg old;\n\nalways @(posedge clk)\n  old <= btn_out_r;\n  \nassign tic = !old & btn_out_r;\n\n//-- El estado del pulsador se saca por state\nassign state = btn_out_r;\n\n",
+                "params": [],
+                "ports": {
+                  "in": [
+                    {
+                      "name": "clk"
+                    },
+                    {
+                      "name": "d"
+                    }
+                  ],
+                  "out": [
+                    {
+                      "name": "state"
+                    },
+                    {
+                      "name": "tic"
+                    }
+                  ]
+                }
+              },
+              "position": {
+                "x": 480,
+                "y": -16
+              },
+              "size": {
+                "width": 432,
+                "height": 560
+              }
+            }
+          ],
+          "wires": [
+            {
+              "source": {
+                "block": "21bc142d-a93a-430d-b37a-326435def9f9",
+                "port": "out"
+              },
+              "target": {
+                "block": "e1c281e9-6a22-456b-863e-20d2550b122c",
+                "port": "d"
+              }
+            },
+            {
+              "source": {
+                "block": "e1c281e9-6a22-456b-863e-20d2550b122c",
+                "port": "tic"
+              },
+              "target": {
+                "block": "997db8c4-b772-49d8-83e7-4427aff720e6",
+                "port": "in"
+              }
+            },
+            {
+              "source": {
+                "block": "5340dd0d-17b9-42a2-b4d9-fbd56349f8c8",
+                "port": "out"
+              },
+              "target": {
+                "block": "e1c281e9-6a22-456b-863e-20d2550b122c",
+                "port": "clk"
+              }
+            },
+            {
+              "source": {
+                "block": "e1c281e9-6a22-456b-863e-20d2550b122c",
+                "port": "state"
+              },
+              "target": {
+                "block": "b58132b2-2e39-4a85-ab5b-63bded91cecc",
+                "port": "in"
+              }
             }
           ]
         }

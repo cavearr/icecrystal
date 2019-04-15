@@ -325,16 +325,32 @@
           "id": "ba158da3-3b57-426c-92fd-4bca44e85610",
           "type": "basic.info",
           "data": {
-            "info": "## Ejemplo 9: Escribir en la pantalla lo que llegue por el terminal serie\n\nTodo lo que llegue por el puerto serie , se escribe en pantalla.\n\nLa memoria inicial se sobreescribe para inicicializar la LCD con la pantalla en blanco.\n\nEl mode del streammer tiene las siguientes opciones:\n\n* 0, buffer circular, cuando la pantalla se llega al final, se comienza por el principio.\n* 1, contínuo, el sistema irá saltando de línea.",
+            "info": "# Ejemplo 9: Escribir en la pantalla lo que llegue por el terminal serie\n\nTodo lo que llegue por el puerto serie , se escribe en pantalla.\n\nLa memoria inicial se sobreescribe para inicicializar la LCD con la pantalla en blanco.\n\nEl mode del streammer tiene las siguientes opciones:\n\n* 0, buffer circular, cuando la pantalla se llega al final, se comienza por el principio.\n* 1, contínuo, el sistema irá saltando de línea, por defecto el módulo de streamming de texto lleva un buffer de 4Kbytes para ir almacenando y pintando a su ritmo.\n\n\n## Comunicación con el PC\n\nPuedes utilizar cualquier programa de terminal serie que te permita una comunicación standar RS-232\n\nSi no sabes como hacerlo mira este fantástico: [tutorial de Obijuan sobre puerto serie en FPGAS](https://github.com/Obijuan/digital-electronics-with-open-FPGAs-tutorial/wiki/V%C3%ADdeo-30:-Puerto-serie)\n\n\nTambién puedes ver el [hilo en twitter a modo resumido](https://twitter.com/Obijuan_cube/status/1060543897758322688).\n\n",
             "readonly": true
           },
           "position": {
-            "x": 640,
-            "y": -1696
+            "x": 672,
+            "y": -1904
           },
           "size": {
             "width": 976,
             "height": 288
+          }
+        },
+        {
+          "id": "f9cffbf4-a099-44ee-917a-33c9ed5e789c",
+          "type": "basic.info",
+          "data": {
+            "info": "Usaremos el botón SW1 para establecer un punto de estado conocido",
+            "readonly": true
+          },
+          "position": {
+            "x": 672,
+            "y": -1424
+          },
+          "size": {
+            "width": 200,
+            "height": 72
           }
         }
       ],

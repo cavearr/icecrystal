@@ -47,7 +47,7 @@
             "clock": false
           },
           "position": {
-            "x": -2096,
+            "x": -2032,
             "y": -568
           }
         },
@@ -217,7 +217,7 @@
             "local": false
           },
           "position": {
-            "x": -1736,
+            "x": -1728,
             "y": -776
           }
         },
@@ -323,7 +323,7 @@
           "id": "1d7f7178-3b98-4d51-b881-8893c58ff768",
           "type": "2107ac7691a91a762c2d0be100faaabd6189973a",
           "position": {
-            "x": -1928,
+            "x": -1864,
             "y": -584
           },
           "size": {
@@ -407,7 +407,7 @@
           "id": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
           "type": "basic.code",
           "data": {
-            "code": "// Módulo que muestra el reloj, se le pasan las coordenadas a partir de las que \n// pintará la hora en un máximo de 12 caracteres en el formato\n// 00:00:00.00.\n\n//Mode puede tomar los siguientes valores\n// 0 CL_H hora\n// 1 CL_M minutos\n// 2 CL_S segundos\n// 3 CL_H_M hora:minutos\n// 4 CL_H_M_S hora:minutos:segundos\n// 5 CL_H_M_S_D hora:minutos:segundos.decimas.\n// 6 CL_S_D segundos.decimas.\n// 7 CL_M_S_D minutos:segundos.decimas.\n// 8 CL_M_S minutos:segundos\n\n\nlocalparam C_H = 0;\nlocalparam C_M = 1;\nlocalparam C_S = 2;\nlocalparam C_H_M = 3;\nlocalparam C_H_M_S = 4;\nlocalparam C_H_M_S_D = 5;\nlocalparam C_S_D = 6;\nlocalparam C_M_S_D = 7;\nlocalparam C_M_S = 8;\n\n\n// FSM\nlocalparam SETUP=0;\nlocalparam FETCH=1;\nlocalparam LOOP_WRITE_1=2;\nlocalparam LOOP_WRITE_2=3;\nlocalparam LOOP_UPDATE_VARS=4;\n\n// Número de columnas\nlocalparam NCOLS = 12; \n// Mapeo de memoria, dirección de la segunda línea\n\nreg [7:0] data=0; \nreg [3:0] x=0;\nreg [3:0] y=0; \nreg [7:0] state=SETUP;\nreg [3:0] save_mode =0;\nreg WE = 0;\nreg rst_secs =0;\n// buffer que contiene la cadena de caracteres del cronómetro que séra\n// cada - es un espacio en blanco\n// 00:00:00.000\nreg [7: 0] buffer [0: NCOLS-1];//={ 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30 }; \nreg [7:0] buffer_counter=0;\nreg mode_change =0;\n\nalways @(posedge clk)begin\n    \n    if(rst)begin\n      rst_secs<=1;\n      state<=SETUP;\n      WE <= 0;\n    \n    end\n    \n    else\n     case(state)\n            SETUP: begin\n                state<=FETCH;\n                rst_secs<=0;\n                data<=0;\n                WE <= 0;\n                buffer_counter<=0;\n                buffer[11] <=\" \";\n                buffer[10] <=\" \";\n                buffer[9] <= \" \";\n                buffer[8] <= \" \";\n                buffer[7] <= \" \";\n                buffer[6] <= \" \";\n                buffer[5] <= \" \"; \n                buffer[4] <= \" \";\n                buffer[3] <= \" \";\n                buffer[2] <= \" \";\n                buffer[1]<= \" \";\n                buffer[0]<= \" \";\n      \n            end \n            \n            FETCH: begin\n                WE <= 0;\n                if(save_mode!==mode) begin\n                rst_secs<=1;\n                save_mode = mode;\n                state<=SETUP;\n                \n                \n            \n                end\n                else begin\n            \n                    case (mode)\n                    C_H: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\"h\";\n                    \n                    end\n                     C_M: begin\n                        buffer[0] <=m_in[15:8];\n                        buffer[1] <=m_in[7:0];\n                        buffer[2]<=\"m\";\n                    \n                    end\n                    C_S: begin\n                        buffer[0] <=s_in[15:8];\n                        buffer[1] <=s_in[7:0];\n                        buffer[2]<=\"s\";\n                    \n                    end\n                    C_H_M: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                    \n                    end\n                    C_H_M_S: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                        buffer[5]<=\":\";\n                        buffer[6] <=s_in[15:8];\n                        buffer[7] <=s_in[7:0];\n                    \n                    end\n                      C_H_M_S_D: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                        buffer[5]<= \":\";\n                        buffer[6] <=s_in[15:8];\n                        buffer[7] <=s_in[7:0];\n                        buffer[8]<=\".\";\n                        buffer[9] <=ds_in[15:8];\n                        buffer[10] <=ds_in[7:0];\n                        \n                    end\n                    C_S_D: begin\n                   \n                        buffer[0] <=s_in[15:8];\n                        buffer[1] <=s_in[7:0];\n                        buffer[2]<=\".\";\n                        buffer[3] <=ds_in[15:8];\n                        buffer[4] <=ds_in[7:0];\n                        \n                    end\n                    C_M_S_D: begin\n                   \n                        buffer[0] <=m_in[15:8];\n                        buffer[1] <=m_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=s_in[15:8];\n                        buffer[4] <=s_in[7:0];\n                        buffer[5]<=\".\";\n                        buffer[6] <=ds_in[15:8];\n                        buffer[7] <=ds_in[7:0];\n         \n                    end\n                    \n                       C_M_S: begin\n                   \n                        buffer[0] <=m_in[15:8];\n                        buffer[1] <=m_in[7:0];\n                        buffer[2] <=\":\";\n                        buffer[3] <=s_in[15:8];\n                        buffer[4] <=s_in[7:0];\n                      \n             \n                    end\n                    default: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                        buffer[5]<=\":\";\n                        buffer[6] <=s_in[15:8];\n                        buffer[7] <=s_in[7:0];\n                        buffer[8]<=\".\";\n                        buffer[9] <=ds_in[15:8];\n                        buffer[10] <=ds_in[7:0];\n           \n                    end\n                    endcase\n                \n                \n                 x<=coord_x;\n                 y<=coord_y;\n                 state<=LOOP_WRITE_1;\n                 buffer_counter<=0;\n                 end\n            end\n            LOOP_WRITE_1: begin\n                if(buffer_counter<NCOLS) begin\n                 state<=LOOP_WRITE_2;\n                 data<=buffer[buffer_counter];\n                 WE <=1;\n                end\n                else \n                begin\n                 state<=FETCH;\n                 \n                end\n            end\n            \n            LOOP_WRITE_2: begin\n                 state<=LOOP_UPDATE_VARS;\n                 \n              \n                 WE <=0;\n            end\n            LOOP_UPDATE_VARS: begin\n              state<=LOOP_WRITE_1;\n                 buffer_counter<=buffer_counter+1;\n               x<=x+1; \n            end\n        endcase\n\n    \nend\n\n\n",
+            "code": "/* *****************************************************************************\n * Cronograph to LCD Engine\n *\n * Author:  Carlos Jesus Venegas Arrabe\n * Project page: https://github.com/charliva/icecrystal\n * ************************************************************************** */\n \n \n// Módulo que muestra el reloj, se le pasan las coordenadas a partir de las que \n// pintará la hora en un máximo de 12 caracteres en el formato\n// 00:00:00.00.\n\n//Mode puede tomar los siguientes valores\n// 0 CL_H hora\n// 1 CL_M minutos\n// 2 CL_S segundos\n// 3 CL_H_M hora:minutos\n// 4 CL_H_M_S hora:minutos:segundos\n// 5 CL_H_M_S_D hora:minutos:segundos.decimas.\n// 6 CL_S_D segundos.decimas.\n// 7 CL_M_S_D minutos:segundos.decimas.\n// 8 CL_M_S minutos:segundos\n\n\nlocalparam C_H = 0;\nlocalparam C_M = 1;\nlocalparam C_S = 2;\nlocalparam C_H_M = 3;\nlocalparam C_H_M_S = 4;\nlocalparam C_H_M_S_D = 5;\nlocalparam C_S_D = 6;\nlocalparam C_M_S_D = 7;\nlocalparam C_M_S = 8;\n\n\n// FSM\nlocalparam SETUP=0;\nlocalparam FETCH=1;\nlocalparam LOOP_WRITE_1=2;\nlocalparam LOOP_WRITE_2=3;\nlocalparam LOOP_UPDATE_VARS=4;\n\n// Número de columnas\nlocalparam NCOLS = 12; \n// Mapeo de memoria, dirección de la segunda línea\n\nreg [7:0] data=0; \nreg [3:0] x=0;\nreg [3:0] y=0; \nreg [7:0] state=SETUP;\nreg [3:0] save_mode =0;\nreg WE = 0;\nreg rst_secs =0;\n// buffer que contiene la cadena de caracteres del cronómetro que séra\n// cada - es un espacio en blanco\n// 00:00:00.000\nreg [7: 0] buffer [0: NCOLS-1];//={ 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30, 8'h30 }; \nreg [7:0] buffer_counter=0;\nreg mode_change =0;\n\nalways @(posedge clk)begin\n    \n    if(rst)begin\n      rst_secs<=1;\n      state<=SETUP;\n      WE <= 0;\n    \n    end\n    \n    else\n     case(state)\n            SETUP: begin\n                state<=FETCH;\n                rst_secs<=0;\n                data<=0;\n                WE <= 0;\n                buffer_counter<=0;\n                buffer[11] <=\" \";\n                buffer[10] <=\" \";\n                buffer[9] <= \" \";\n                buffer[8] <= \" \";\n                buffer[7] <= \" \";\n                buffer[6] <= \" \";\n                buffer[5] <= \" \"; \n                buffer[4] <= \" \";\n                buffer[3] <= \" \";\n                buffer[2] <= \" \";\n                buffer[1]<= \" \";\n                buffer[0]<= \" \";\n      \n            end \n            \n            FETCH: begin\n                WE <= 0;\n                if(save_mode!==mode) begin\n                rst_secs<=1;\n                save_mode = mode;\n                state<=SETUP;\n                \n                \n            \n                end\n                else begin\n            \n                    case (mode)\n                    C_H: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\"h\";\n                    \n                    end\n                     C_M: begin\n                        buffer[0] <=m_in[15:8];\n                        buffer[1] <=m_in[7:0];\n                        buffer[2]<=\"m\";\n                    \n                    end\n                    C_S: begin\n                        buffer[0] <=s_in[15:8];\n                        buffer[1] <=s_in[7:0];\n                        buffer[2]<=\"s\";\n                    \n                    end\n                    C_H_M: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                    \n                    end\n                    C_H_M_S: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                        buffer[5]<=\":\";\n                        buffer[6] <=s_in[15:8];\n                        buffer[7] <=s_in[7:0];\n                    \n                    end\n                      C_H_M_S_D: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                        buffer[5]<= \":\";\n                        buffer[6] <=s_in[15:8];\n                        buffer[7] <=s_in[7:0];\n                        buffer[8]<=\".\";\n                        buffer[9] <=ds_in[15:8];\n                        buffer[10] <=ds_in[7:0];\n                        \n                    end\n                    C_S_D: begin\n                   \n                        buffer[0] <=s_in[15:8];\n                        buffer[1] <=s_in[7:0];\n                        buffer[2]<=\".\";\n                        buffer[3] <=ds_in[15:8];\n                        buffer[4] <=ds_in[7:0];\n                        \n                    end\n                    C_M_S_D: begin\n                   \n                        buffer[0] <=m_in[15:8];\n                        buffer[1] <=m_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=s_in[15:8];\n                        buffer[4] <=s_in[7:0];\n                        buffer[5]<=\".\";\n                        buffer[6] <=ds_in[15:8];\n                        buffer[7] <=ds_in[7:0];\n         \n                    end\n                    \n                       C_M_S: begin\n                   \n                        buffer[0] <=m_in[15:8];\n                        buffer[1] <=m_in[7:0];\n                        buffer[2] <=\":\";\n                        buffer[3] <=s_in[15:8];\n                        buffer[4] <=s_in[7:0];\n                      \n             \n                    end\n                    default: begin\n                        buffer[0]<=h_in[15:8];\n                        buffer[1]<=h_in[7:0];\n                        buffer[2]<=\":\";\n                        buffer[3] <=m_in[15:8];\n                        buffer[4] <=m_in[7:0];\n                        buffer[5]<=\":\";\n                        buffer[6] <=s_in[15:8];\n                        buffer[7] <=s_in[7:0];\n                        buffer[8]<=\".\";\n                        buffer[9] <=ds_in[15:8];\n                        buffer[10] <=ds_in[7:0];\n           \n                    end\n                    endcase\n                \n                \n                 x<=coord_x;\n                 y<=coord_y;\n                 state<=LOOP_WRITE_1;\n                 buffer_counter<=0;\n                 end\n            end\n            LOOP_WRITE_1: begin\n                if(buffer_counter<NCOLS) begin\n                 state<=LOOP_WRITE_2;\n                 data<=buffer[buffer_counter];\n                 WE <=1;\n                end\n                else \n                begin\n                 state<=FETCH;\n                 \n                end\n            end\n            \n            LOOP_WRITE_2: begin\n                 state<=LOOP_UPDATE_VARS;\n                 \n              \n                 WE <=0;\n            end\n            LOOP_UPDATE_VARS: begin\n              state<=LOOP_WRITE_1;\n                 buffer_counter<=buffer_counter+1;\n               x<=x+1; \n            end\n        endcase\n\n    \nend\n\n\n",
             "params": [],
             "ports": {
               "in": [
@@ -500,39 +500,99 @@
           }
         },
         {
-          "id": "66ae91f1-ce4f-4f09-b65c-f1f5ef566a01",
+          "id": "970ef448-9c2c-4d45-9245-d8a5f53ab8dc",
           "type": "basic.info",
           "data": {
-            "info": "## Ejemplo 6: Cronómetro con cambio de modo\n\n",
+            "info": "## Ejemplo 6: Cronómetro con cambio de modo\n\nEste ejemplo muestra como representar los dígitos de un cronómetro en la segunda fila de la pantalla.\n\nEn este caso se ha implementado un **motor gráfico de cronómetro**  lo que será tpico en las aplicaciones gráficas con cierta complejidad.\n\nEn este caso es un bloque en Verilog que lo que hace es sustiruir en cada iteración el valor de los contadores del cronómetro y refrescar la LCD.\n\nCon el botón SW2 cambiaremos de modo de visualización, para poder ver , sólo las horas transcurridas, sólo los minutos, sólo los segundos, horas y minutos, minutos y segundos, segundos y centésimas de segundo...\n\n",
             "readonly": true
           },
           "position": {
-            "x": -2952,
-            "y": -1168
+            "x": -3128,
+            "y": -984
           },
           "size": {
-            "width": 976,
-            "height": 288
+            "width": 952,
+            "height": 712
+          }
+        },
+        {
+          "id": "4386c8f6-7bbe-49df-a17b-024de8c5d937",
+          "type": "basic.info",
+          "data": {
+            "info": "**SW1**, para volver a un estado conocido",
+            "readonly": true
+          },
+          "position": {
+            "x": -2080,
+            "y": -1000
+          },
+          "size": {
+            "width": 296,
+            "height": 56
+          }
+        },
+        {
+          "id": "4f412625-8b50-47ad-a98f-058b10d18263",
+          "type": "basic.info",
+          "data": {
+            "info": "Con el botón **SW2**, cambiareoms entre los 9 modos de visualización posibles",
+            "readonly": true
+          },
+          "position": {
+            "x": -2040,
+            "y": -480
+          },
+          "size": {
+            "width": 272,
+            "height": 64
+          }
+        },
+        {
+          "id": "560ecf5f-06d5-4e3d-9f91-0c296f79d172",
+          "type": "2107ac7691a91a762c2d0be100faaabd6189973a",
+          "position": {
+            "x": -1928,
+            "y": -936
+          },
+          "size": {
+            "width": 96,
+            "height": 64
+          }
+        },
+        {
+          "id": "6ebee83b-c8a1-4e0c-b0d2-83f0713bc987",
+          "type": "basic.info",
+          "data": {
+            "info": "Las posiciones **XY** de la LCD desde dónde comenzaremos a pintar la información del cronómetro",
+            "readonly": true
+          },
+          "position": {
+            "x": -1720,
+            "y": -392
+          },
+          "size": {
+            "width": 176,
+            "height": 160
+          }
+        },
+        {
+          "id": "3d7493bf-3934-4661-9bce-9093c0da8865",
+          "type": "basic.info",
+          "data": {
+            "info": "**Contadores en cascada** para generar el cronómetro",
+            "readonly": true
+          },
+          "position": {
+            "x": -3128,
+            "y": 8
+          },
+          "size": {
+            "width": 176,
+            "height": 56
           }
         }
       ],
       "wires": [
-        {
-          "source": {
-            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
-            "port": "out"
-          },
-          "target": {
-            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
-            "port": "rst"
-          },
-          "vertices": [
-            {
-              "x": -1312,
-              "y": -664
-            }
-          ]
-        },
         {
           "source": {
             "block": "f8ce738b-b50d-49b6-b906-03ddad8a27e8",
@@ -622,22 +682,6 @@
             "block": "ffab1f70-6a3c-4216-98d9-5c493b4af069",
             "port": "eb9f9c33-e717-43f0-98eb-dbd9c278fa8c"
           }
-        },
-        {
-          "source": {
-            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
-            "port": "out"
-          },
-          "target": {
-            "block": "ffab1f70-6a3c-4216-98d9-5c493b4af069",
-            "port": "743b5299-2d89-4783-b7c9-12a5b36df406"
-          },
-          "vertices": [
-            {
-              "x": -1920,
-              "y": -752
-            }
-          ]
         },
         {
           "source": {
@@ -769,22 +813,6 @@
             }
           ],
           "size": 8
-        },
-        {
-          "source": {
-            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
-            "port": "out"
-          },
-          "target": {
-            "block": "09f4d2b5-19a6-4d82-a2ab-e6aa8bff9c37",
-            "port": "5751bfd4-9119-4458-8709-86e2d1850cdb"
-          },
-          "vertices": [
-            {
-              "x": -144,
-              "y": -656
-            }
-          ]
         },
         {
           "source": {
@@ -1009,7 +1037,13 @@
           "target": {
             "block": "d91dd883-076c-4a89-851d-58462feaae0c",
             "port": "6982faa1-414d-4934-92a3-ccace9cef491"
-          }
+          },
+          "vertices": [
+            {
+              "x": 152,
+              "y": -392
+            }
+          ]
         },
         {
           "source": {
@@ -1076,8 +1110,8 @@
         },
         {
           "source": {
-            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
-            "port": "out"
+            "block": "560ecf5f-06d5-4e3d-9f91-0c296f79d172",
+            "port": "997db8c4-b772-49d8-83e7-4427aff720e6"
           },
           "target": {
             "block": "d91dd883-076c-4a89-851d-58462feaae0c",
@@ -1085,10 +1119,62 @@
           },
           "vertices": [
             {
-              "x": 192,
-              "y": -584
+              "x": 168,
+              "y": -640
             }
           ]
+        },
+        {
+          "source": {
+            "block": "560ecf5f-06d5-4e3d-9f91-0c296f79d172",
+            "port": "997db8c4-b772-49d8-83e7-4427aff720e6"
+          },
+          "target": {
+            "block": "09f4d2b5-19a6-4d82-a2ab-e6aa8bff9c37",
+            "port": "5751bfd4-9119-4458-8709-86e2d1850cdb"
+          },
+          "vertices": [
+            {
+              "x": -200,
+              "y": -568
+            }
+          ]
+        },
+        {
+          "source": {
+            "block": "560ecf5f-06d5-4e3d-9f91-0c296f79d172",
+            "port": "997db8c4-b772-49d8-83e7-4427aff720e6"
+          },
+          "target": {
+            "block": "23bc7bbd-877d-4b7a-8a37-be342d8bb364",
+            "port": "rst"
+          }
+        },
+        {
+          "source": {
+            "block": "560ecf5f-06d5-4e3d-9f91-0c296f79d172",
+            "port": "997db8c4-b772-49d8-83e7-4427aff720e6"
+          },
+          "target": {
+            "block": "ffab1f70-6a3c-4216-98d9-5c493b4af069",
+            "port": "743b5299-2d89-4783-b7c9-12a5b36df406"
+          },
+          "vertices": [
+            {
+              "x": -1784,
+              "y": -800
+            }
+          ]
+        },
+        {
+          "source": {
+            "block": "38ffc277-5dbf-4c24-a9b0-805a781a8f5f",
+            "port": "out"
+          },
+          "target": {
+            "block": "560ecf5f-06d5-4e3d-9f91-0c296f79d172",
+            "port": "21bc142d-a93a-430d-b37a-326435def9f9"
+          }
         }
       ]
     }
