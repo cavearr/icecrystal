@@ -3,7 +3,7 @@
 [![Icestudio](https://img.shields.io/badge/collection-icestudio-blue.svg)](https://github.com/FPGAwars/icestudio)
 ![Version](https://img.shields.io/badge/version-v1.0.0-orange.svg)
 
-![](https://github.com/cavearr/icecrystal/raw/master/assets/icons/icecrystal-logo.svg)
+![](https://github.com/cavearr/icecrystal/raw/master/assets/icons/icecrystal-logo.png)
 
 Icestudio Block Collection to drive graphic displays from Open Source FPGAs
 
