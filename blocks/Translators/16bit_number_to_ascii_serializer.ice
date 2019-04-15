@@ -311,7 +311,7 @@
           "id": "5920c902-4167-4fb8-96a5-b1314bc6cc7a",
           "type": "basic.output",
           "data": {
-            "name": "n_m",
+            "name": "n_M",
             "range": "[3:0]",
             "pins": [
               {
@@ -346,7 +346,7 @@
           "id": "d580f42e-4bc7-40eb-9b7e-539ac3d2c2d7",
           "type": "basic.output",
           "data": {
-            "name": "n_M",
+            "name": "n_m",
             "range": "[3:0]",
             "pins": [
               {
@@ -667,6 +667,38 @@
           "size": {
             "width": 928,
             "height": 552
+          }
+        },
+        {
+          "id": "977d4f14-3a60-4c77-9cb6-adc51a06fd97",
+          "type": "basic.info",
+          "data": {
+            "info": "# 16bit number to ascii serializer\n\nThis block, take a 16 bit value (5 digits) and decomponse it in individual digits.\n\nVery usefull to display the number, for example into LCD.\n\nOuput will be seriealized (digit by digit) and decompose by digit (one output by digit).\n\nSerialization is in ascii code and digit decomposition is as number.\n\n## Inputs\n\n* **value**: 16 bit unsigned integer number\n* **X0,Y0**: coordinate to start painting number\n* **load**  signal to load integer to decompose.\n* **next**: allow to send next digit (for example if you need to wait for a display)\n",
+            "readonly": true
+          },
+          "position": {
+            "x": 200,
+            "y": -168
+          },
+          "size": {
+            "width": 592,
+            "height": 272
+          }
+        },
+        {
+          "id": "54e94640-7ed8-469e-9980-5268dba6d6f0",
+          "type": "basic.info",
+          "data": {
+            "info": "## Outputs\n\n* **X,Y**: coordinates to paint the output char.\n* **char**: output char (ascii code for the digit)\n* **char_ready**: signal, HIGHT , char is ready to paint. LOW, no char to paint.\n* **n_M**: digit for thousand thousands\n* **n_m**: digit for thousands\n* **n_c**: digit for hundredths\n* **n_d**: digit for decimas\n* **n_u**: digit for units\n* **busy**: HIGHT, block is painting. LOW, block is ready to paint next number.\n",
+            "readonly": true
+          },
+          "position": {
+            "x": 1336,
+            "y": -56
+          },
+          "size": {
+            "width": 632,
+            "height": 176
           }
         }
       ],

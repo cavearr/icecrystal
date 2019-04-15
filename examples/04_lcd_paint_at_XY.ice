@@ -147,7 +147,7 @@
           "id": "e8fa7dc7-fc72-4de8-9848-71301bf4effc",
           "type": "basic.constant",
           "data": {
-            "name": "",
+            "name": "Y",
             "value": "0",
             "local": true
           },
@@ -160,7 +160,7 @@
           "id": "307ea8f4-6656-483c-b28f-93253fd143ee",
           "type": "basic.constant",
           "data": {
-            "name": "",
+            "name": "X",
             "value": "0",
             "local": true
           },
@@ -173,7 +173,7 @@
           "id": "5f874857-e979-4e22-ab72-e51bc32693fe",
           "type": "basic.constant",
           "data": {
-            "name": "",
+            "name": "CHAR",
             "value": "\"A\"",
             "local": true
           },

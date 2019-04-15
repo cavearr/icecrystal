@@ -571,6 +571,22 @@
             "width": 656,
             "height": 408
           }
+        },
+        {
+          "id": "965ad055-e3e9-4e29-8ed9-3d23f1bf1e87",
+          "type": "basic.info",
+          "data": {
+            "info": "# 2 sources compositor\n\nThis block, take 2 char sources and serialice to one serial channel.\n\nEach source has its own load independant signal.\n\n## Inputs\n\n* **X0,Y0**: coordinates to paint the first char.\n* **char0**: first source char to paint\n* **load0**  signal to load first source char\n* **X1,Y1**: coordinates to paint the second char.\n* **char1**: second source char to paint.\n* **load1**  signal to load second source char.\n\n\n## Outputs\n\n* **X,Y**: coordinates to paint the output char.\n* **char**: output char\n* **char_ready**: signal, HIGHT , char is ready to paint. LOW, no char to paint.\n* **busy**: HIGHT, block is painting. LOW, block is ready to paint.\n",
+            "readonly": true
+          },
+          "position": {
+            "x": 344,
+            "y": -288
+          },
+          "size": {
+            "width": 792,
+            "height": 336
+          }
         }
       ],
       "wires": [
