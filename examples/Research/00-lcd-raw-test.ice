@@ -224,7 +224,7 @@
           "type": "basic.constant",
           "data": {
             "name": "TOTAL",
-            "value": "59",
+            "value": "61",
             "local": false
           },
           "position": {
@@ -237,7 +237,7 @@
           "type": "basic.memory",
           "data": {
             "name": "Comandos LCD (9 bits)",
-            "list": "038  //-- SET\n00C  //-- Display ON\n001  //-- CLS\n148  //-- HOLA\n14F  //- O\n14C  //- L\n141  //- A\n121\n120\n170\n172\n16f\n162\n161\n16E\n164\n16F\n12E\n12E\n178 //-- Linea oculta\n131\n178\n131\n178 \n131\n178\n131\n178 \n131\n178\n131\n178\n131\n178\n131\n178 //--- Linea oculta\n132\n178 \n132\n178 \n132\n178 \n132\n153  //-- SEGUNDA LINEA\n165\n167\n175\n16E\n164\n161\n120\n16C\n169\n16E\n165\n161\n12E\n12E\n12E\n",
+            "list": "038  //-- SET\n038  //-- SET\n038  //-- SET\n00C  //-- Display ON\n001  //-- CLS\n148  //-- HOLA\n14F  //- O\n14C  //- L\n141  //- A\n121\n120\n170\n172\n16f\n162\n161\n16E\n164\n16F\n12E\n12E\n178 //-- Linea oculta\n131\n178\n131\n178 \n131\n178\n131\n178 \n131\n178\n131\n178\n131\n178\n131\n178 //--- Linea oculta\n132\n178 \n132\n178 \n132\n178 \n132\n153  //-- SEGUNDA LINEA\n165\n167\n175\n16E\n164\n161\n120\n16C\n169\n16E\n165\n161\n12E\n12E\n12E\n",
             "local": false,
             "format": 10
           },
@@ -248,6 +248,32 @@
           "size": {
             "width": 232,
             "height": 192
+          }
+        },
+        {
+          "id": "c71bd6fa-868b-42e0-94af-bc680eadc72c",
+          "type": "basic.constant",
+          "data": {
+            "name": "TOTAL",
+            "value": "850",
+            "local": false
+          },
+          "position": {
+            "x": -816,
+            "y": -472
+          }
+        },
+        {
+          "id": "f4014f60-01e3-4968-a40a-f63f3a7d24ae",
+          "type": "basic.constant",
+          "data": {
+            "name": "TOTAL",
+            "value": "20",
+            "local": false
+          },
+          "position": {
+            "x": -688,
+            "y": -472
           }
         },
         {
@@ -1084,6 +1110,26 @@
           "target": {
             "block": "e3e11bf0-cc50-4bfb-98b2-58bd5627dbe7",
             "port": "e4111201-8441-4e7d-bcd2-bcf9d265d043"
+          }
+        },
+        {
+          "source": {
+            "block": "f4014f60-01e3-4968-a40a-f63f3a7d24ae",
+            "port": "constant-out"
+          },
+          "target": {
+            "block": "1791ad36-4059-415b-bb3c-18c3961cb927",
+            "port": "3ec9c783-282c-4323-853c-c250afc121b1"
+          }
+        },
+        {
+          "source": {
+            "block": "c71bd6fa-868b-42e0-94af-bc680eadc72c",
+            "port": "constant-out"
+          },
+          "target": {
+            "block": "1791ad36-4059-415b-bb3c-18c3961cb927",
+            "port": "8274a772-44ea-4a7c-b32d-ec5ea4dd78ef"
           }
         }
       ]
