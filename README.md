@@ -50,6 +50,8 @@ Icestudio Block Collection to drive graphic displays from Open Source FPGAs
 * [Carlos Venegas Arrabe (cavearr)](https://github.com/cavearr)
 * [Juan González-Gómez (Obijuan)](https://github.com/Obijuan)
 
+## Contributors
+* [Demócrito](https://github.com/Democrito), thanks for the i2c oled screen block.
 
 ## License
 
