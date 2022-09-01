@@ -1,4 +1,4 @@
-# Example 1: CLS command.
+# Example 01: CLS command.
 
 ## A simple example of executing a command.
 
