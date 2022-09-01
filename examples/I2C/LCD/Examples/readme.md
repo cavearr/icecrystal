@@ -1,4 +1,6 @@
-# A simple example of executing a command.
+# Example 1.
+
+## A simple example of executing a command.
 
 Since we already have a driver (or controller) that automates the part of converting characters or commands through I2C, we now need to define the commands. The sending of characters is direct (having RS = 1), but it is necessary to define the actions of the commands. The simplest of all is the CLS and it has the value "01", that is, if you send a simple 1 to the data input, put RS = 0 (because it is a command) and mark "start", it will execute that action, which is to clear the screen.
 
