@@ -17,6 +17,8 @@ I leave you with a retro photo I took of this project.
 
 # Advanced information.
 
+![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/LCD/img/LCD%20with%20I2C.jpg)
+
 The I2C shield that is connected to the LCD screen is a standard, in the sense that they have adapted the PCF8574T chip to expressly connect it to any LCD. In the tests I have used two blue LCDs (blue background and white pixels), one 16x2 and the other 20x4. I recommend using the 20x4 because when you finish writing in one row, it appears in another, but not in order, the order is row 1, 3, 2 and 4.
 
 When the I2C shield is connected to the LCD, it looks like this:
