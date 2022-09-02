@@ -38,7 +38,7 @@ This way of handling the LCD is... a bit complicated, because we are forced to s
 Let's see the 4 steps in detail, and imagine I want to send the letter "A" which is 41 in hex, so the high nibble is 4 and the low nibble is 1.
 On the other hand, the control bits will be like this and in this order (as in binary, MSB on the left)
 
-Backlighting (it will always be 1), Enable (we will control this bit), RW (always 0), RS (we will control it depending on whether it is a command or character ASCII)
+Backlighting (it will always be 1 for now on the outside of the circuit), Enable (we will control this bit), RW (always 0), RS (we will control it depending on whether it is a command or character ASCII)
 
 1.) Nibble high "4" + control (enable = 1, RS = 1, others fixed)
 
