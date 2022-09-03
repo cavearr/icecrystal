@@ -58,4 +58,27 @@ The "done" and "busy" pins are there for when we want to add special functions, 
 
 We also leave the light input pin at 1 and in more advanced examples we will see how to handle it. It can be used to attract attention with blinks, and in the same way, to give effect in a "Game Over" :)
 
+# Commands
+
+In the "Examples" folder there is an example that allows executing the "CLS" command through the "escape" key. This command has the value "01". Once you see how this command works, you can try changing the value "01" to any of the values listed just below. The CLS command is a visually direct command, but there are others that change the writing mode and it is from its execution that what we continue to write changes the behavior.
+
+### Commands to LCD instruction register
+
+01: Clear screen. CLS    
+02: Put cursor at position (0,0)    
+04: Move the cursor to the left.    
+06: Move the cursor to the right.    
+05: Right horizontal scroll. When you send this command, the next thing you type will scroll all the way to the right.    
+07: Left horizontal scroll.  When you send this command, the next thing you type will scroll all the way to the left.    
+0E: Screen on, the cursor is a low dash without flashing.    
+08: Screen off. Everything disappears.    
+0C: Turn off the cursor. It allows writing but there is no cursor.    
+0F: LCD ON, cursor ON    
+    
+38: 2 lines and 5×7 matrix (???)    
+3C: Activate second line (???)    
+    
+8n: Go directly to position n = (0..F) of the first line.    
+Cn: Go directly to position n = (0..F) of the second line.    
+    
 Log: https://groups.google.com/g/fpga-wars-explorando-el-lado-libre/c/KCSp2DxaKBw
