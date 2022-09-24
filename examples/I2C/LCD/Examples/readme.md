@@ -6,10 +6,6 @@ Since we already have a driver (or controller) that automates the part of conver
 
 ![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/LCD/img/example_lcd_i2c_command_cls.PNG)
 
-I have associated the "escape" key that has the ASCII value 27, so that it performs the CLS function. In the example, you can type anything, and when you press the "escape" key, the screen will clear and you can continue typing.
+I have associated the "escape" key that has the ASCII value 27, so that it performs the CLS function. In the example, you can type anything, and when you press the "escape" key, the screen will clear and you can continue typing. If you wish, you can replace ASCII 27 with another, for example ASCII 10, this way pressing "enter" will do the same thing: clear the screen.
 
-If you replace "CLS" with [another command](https://github.com/Democrito/icecrystal/tree/master/examples/I2C/LCD#commands), in the example it is in decimal base. If you are going to use hexadecimal numbers, remember to put **'h** in front
-
-# Example 02: Vertical Scroll.
-
-Pendiente de pulir dellates del circuito pero es funcional. Falta crear un sistema para que no haya conflictos entre la lectura de la memoria y la escritura, y esto sólo sucede si se envía texto muy rápido. (TODO)
+If you replace "CLS" with [another command](https://github.com/Democrito/icecrystal/tree/master/examples/I2C/LCD#commands), in the example it is in decimal base. If you are going to use hexadecimal numbers, remember to put **'h** in front.
