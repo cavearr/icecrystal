@@ -12,13 +12,15 @@ To illustrate how simple it is to make it work, I leave you with this image. It 
 
 If you view the signals through [PulseView](https://sigrok.org/doc/pulseview/0.4.1/manual.html), the first byte is always interpreted as an address, so it doesn't come out with the value 55 (in this example), but this doesn't mean it's wrong, just that it interprets the first byte as an address 7 bits instead of 8.
 
-![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/Signals%20i2c%20example.PNG)
+![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/LCD/img/img2/Signals%20i2c%20example.png)
 
 We can verify that the first byte, being the address, instead of "55" PulseWiew interprets it as "2A", however, if we read the binary part, we verify that it is "0101_0101", therefore it is "55". Everything's fine!
 
+To go deeper into the write-only I2C protocol, you can go here: https://github.com/Democrito/I2C_only_write  although the I2C master module and the examples work with another philosophy.
+
 # How the I2C read and write module works
 
-![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/image_I2C_RW_module.PNG)
+![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/LCD/img/img2/image_I2C_RW_module.png)
 
 Taking readings from an I2C is not trivial. A good knowledge of the I2C protocol is required. As a general rule, peripherals and sensors must be configured first in order to read the data later.
 
@@ -38,7 +40,7 @@ The sda_test, scl_test and rw_test pins do not have a hardware utility per se, b
 
 The "sda" and "scl" pins are obviously where we connect the I2C bus.
 
-![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/image_example_I2C_RW_ADC.PNG)
+![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/LCD/img/img2/image_example_I2C_RW_ADC.png)
 
 As an example, I have used the ADC that comes with the [Alhambras FPGA](https://alhambrabits.com/alhambra/). And to make it as simple as possible, it only reads channel 0.
 
@@ -52,4 +54,4 @@ On the left side of the schematic is a delayed start circuit. I put it on purpos
 
 I leave an image of the signals that [PulseView](https://sigrok.org/doc/pulseview/0.4.1/manual.html) reads.
 
-![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/ads7924_signals.png)
+![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/LCD/img/img2/ads7924_signals.png)
