@@ -28,6 +28,6 @@ You can connect it without the need for cables, directly to the [Alhambra II](ht
 
 ![](https://github.com/Democrito/repositorios/blob/master/Sensors/I2C/OLED/drawLines/img/alhambra%20fpga%20oled.jpg)
 
-### Credits: [Obijuan](https://github.com/Obijuan), [Carlos Venegas Arrabé](https://github.com/cavearr) and [Joaquim](https://groups.google.com/g/fpga-wars-explorando-el-lado-libre/c/FN34KJtfhSo).
+### Credits: [Obijuan](https://github.com/Obijuan), [Carlos Venegas Arrabé](https://github.com/cavearr) and [Joaquim](https://github.com/jojo535275).
 
 ### Log: https://groups.google.com/g/fpga-wars-explorando-el-lado-libre/c/FN34KJtfhSo
