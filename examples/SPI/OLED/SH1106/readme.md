@@ -14,3 +14,5 @@ SDA: Data out (MOSI)
 RES: Reset (reverse logic)  
 DC:  Data / Command  
 CS:  Chip Select (reverse logic)  
+
+The zip contains the samples I took via PulseView, to see how an Arduino did it. From there I got the configuration and the mode of operation to apply it to my design with FPGA.
