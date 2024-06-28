@@ -5,14 +5,23 @@
   "keywords": "LCD,Display",
   "license": "GPL-2.0",
   "authors": [{
-    "name": "Carlos Jesús Venegas Arrabé (charliva)",
+    "name": "Carlos Venegas Arrabé (X: @cavearr)",
     "email": "carlos@magnitude.es",
-    "url": "https://github.com/charliva"
+    "url": "https://github.com/cavearr"
   }],
-  "contributors": [],
+  "contributors": [    {
+      "name": "Juan González (Obijuan)",
+      "url": "https://github.com/obijuan"
+    },   {
+      "name": "Demócrito",
+      "url": "https://github.com/Democrito"
+    },   {
+      "name": "Fernando Mosquera",
+      "url": "https://github.com/benitoss"
+    }],
   "repository": {
     "type": "git",
-    "branch": "master",
+    "branch": "main",
     "url": "https://github.com/charliva/icecrystal"
   }
 }
