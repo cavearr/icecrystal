@@ -46,10 +46,11 @@ Icestudio Block Collection to drive graphic displays from Open Source FPGAs
 * *10 - X-WING*
    
 
-## Authors
+## Authors & Contributors
 * [Carlos Venegas Arrabe (cavearr)](https://github.com/cavearr)
 * [Juan González-Gómez (Obijuan)](https://github.com/Obijuan)
 * [Demócrito](https://github.com/Democrito)
+* [Fernando Mosquera](https://github.com/benitoss)
 
 ## License
 
